@@ -1,0 +1,17 @@
+# Compiled files
+*.class
+*.jar
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# Build output
+bin/
+out/
+build/
+target/
