@@ -10,6 +10,22 @@ public class TrainingSession {
     private String location;
     private String topic;
     private ArrayList<Long> presentID = new ArrayList<>();
+    TrainingSession(){
+        trainingID=-1;
+        date=new int[]{1,1,1};
+        location="Unknown";
+        topic="Unknown";
+    }
+    /*
+    TrainingSession(long id, int[] Date, String loc, String top)
+    {
+        boolean ch;
+        setID(id);
+        setDate(Date[0], Date[1], Date[2]);
+        setLocation(loc);
+        setTopic(top);
+    }
+    */
     boolean setID(long id){
         if(id>0&&id<1000000000)
         {
@@ -123,7 +139,7 @@ class trainingRecords {
     ArrayList<TrainingSession> trainingList;
     int count;
     void addSession(int req){
-        for(int i=0; i<req; i++)
+        for(int i=count; i<req; i++)
         {
             TrainingSession TS=new TrainingSession();
             TS.recordSession();
