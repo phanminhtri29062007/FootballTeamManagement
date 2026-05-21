@@ -15,3 +15,5 @@ bin/
 out/
 build/
 target/
+/FTM/nbproject/private/
+/nbproject/private/
