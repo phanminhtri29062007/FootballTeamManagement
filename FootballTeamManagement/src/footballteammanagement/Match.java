@@ -10,8 +10,12 @@ import java.util.ArrayList;
  *
  * @author nguyenlongvu
  */
-public class MatchManagement {
+public class Match {
         double MatchID;
         
         
+}
+
+class matchRecord{
+    
 }
