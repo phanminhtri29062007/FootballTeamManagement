@@ -5,11 +5,8 @@
 package footballteammanagement;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
-/**
- * 
- * @author phanm
- */
 public class Player {
     long playerID;
     String fullName;
@@ -20,29 +17,211 @@ public class Player {
     int baseSalary;
     int playerType;
     boolean status;
-    void enterPlayer(){
-        
+
+    //ENTER PLAYER
+    void enterPlayer() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter ID: ");
+        playerID = sc.nextLong();
+        sc.nextLine();
+
+        System.out.print("Enter full name: ");
+        fullName = sc.nextLine();
+
+        System.out.print("Enter age: ");
+        age = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter nationality: ");
+        nationality = sc.nextLine();
+
+        System.out.print("Enter position: ");
+        position = sc.nextLine();
+
+        System.out.print("Enter shirt number: ");
+        shirtNumber = sc.nextInt();
+
+        System.out.print("Enter base salary: ");
+        baseSalary = sc.nextInt();
+
+        System.out.print("Enter player type: ");
+        playerType = sc.nextInt();
+
+        status = true;
     }
-    void printPlayer(){
-        
+
+    //PRINT PLAYER
+    void printPlayer() {
+        System.out.println("ID: " + playerID);
+        System.out.println("Name: " + fullName);
+        System.out.println("Age: " + age);
+        System.out.println("Nationality: " + nationality);
+        System.out.println("Position: " + position);
+        System.out.println("Shirt Number: " + shirtNumber);
+        System.out.println("Salary: " + baseSalary);
+        System.out.println("Player Type: " + playerType);
+        System.out.println("Status: " + status);
     }
 }
+
 class playerList {
-    ArrayList<Player> list;
-    int count;
-    void updatePlayerInfo(){
-        
+    ArrayList<Player> list = new ArrayList<>();
+    int count = 0;
+
+    //ADD PLAYER
+    void addPlayer() {
+        Player p = new Player();
+        p.enterPlayer();
+        list.add(p);
+        count++;
+        System.out.println("Add player successfully.");
     }
-    void deactivatePlayer(){
-        
+
+    //ADD MANY PLAYERS
+    void addManyPlayer() {
+        Scanner sc = new Scanner(System.in);
+        boolean cont = false;
+
+        do {
+            Player p = new Player();
+            p.enterPlayer();
+            list.add(p);
+            count++;
+
+            System.out.println("Add more? (true|false)");
+            cont = sc.nextBoolean();
+
+        } while (cont);
+
+        System.out.println("Finish adding players.");
     }
-    void printAllPlayer(){
-        
+    
+    //UPDATE
+    void updatePlayerInfo() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter player ID to update: ");
+        long id = sc.nextLong();
+        sc.nextLine();
+
+        boolean found = false;
+
+        for (Player p : list) {
+            if (p.playerID == id && p.status == true) {
+
+                System.out.print("Enter new full name: ");
+                p.fullName = sc.nextLine();
+
+                System.out.print("Enter new age: ");
+                p.age = sc.nextInt();
+                sc.nextLine();
+
+                System.out.print("Enter new nationality: ");
+                p.nationality = sc.nextLine();
+
+                System.out.print("Enter new position: ");
+                p.position = sc.nextLine();
+
+                System.out.print("Enter new shirt number: ");
+                p.shirtNumber = sc.nextInt();
+
+                System.out.print("Enter new base salary: ");
+                p.baseSalary = sc.nextInt();
+
+                System.out.print("Enter new player type: ");
+                p.playerType = sc.nextInt();
+
+                System.out.println("Update successful.");
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Player not found.");
+        }
     }
-    void searchPlayer(){
-        
+
+    //DEACTIVATE
+    void deactivatePlayer() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter player ID to deactivate: ");
+        long id = sc.nextLong();
+
+        boolean found = false;
+
+        for (Player p : list) {
+            if (p.playerID == id && p.status == true) {
+                p.status = false;
+                System.out.println("Deactivate successful.");
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Player not found.");
+        }
     }
-    void printPlayerInfo(){
-        
+
+    //PRINT ALL
+    void printAllPlayer() {
+        if (list.isEmpty()) {
+            System.out.println("No players in list.");
+            return;
+        }
+
+        for (Player p : list) {
+            if (p.status == true) {
+                p.printPlayer();
+                System.out.println("------------------");
+            }
+        }
+    }
+
+    //SEARCH BY NAME
+    void searchPlayer() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter player name: ");
+        String name = sc.nextLine();
+
+        boolean found = false;
+
+        for (Player p : list) {
+            if (p.fullName.toLowerCase().contains(name.toLowerCase())
+                    && p.status == true) {
+                p.printPlayer();
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Player not found.");
+        }
+    }
+
+    //PRINT BY ID
+    void printPlayerInfo() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter player ID: ");
+        long id = sc.nextLong();
+
+        boolean found = false;
+
+        for (Player p : list) {
+            if (p.playerID == id && p.status == true) {
+                p.printPlayer();
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Player not found.");
+        }
     }
 }
