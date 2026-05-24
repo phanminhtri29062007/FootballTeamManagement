@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FootballTeamManagement {
-     static Scanner sc = new Scanner(System.in);
+     Scanner sc = new Scanner(System.in);
 
      static String inputString(String prompt){
+     Scanner sc = new Scanner(System.in);
         String value;
         while(true){
             System.out.print(prompt);
@@ -29,6 +30,7 @@ public class FootballTeamManagement {
       }
 
       static int inputInt(String prompt, int min, int max){
+     Scanner sc = new Scanner(System.in);
         int value;
         while(true){
             System.out.print(prompt);
@@ -47,6 +49,7 @@ public class FootballTeamManagement {
       }
 
       static double inputSalary(String prompt){
+     Scanner sc = new Scanner(System.in);
         double value;
         while(true){
             System.out.print(prompt);
