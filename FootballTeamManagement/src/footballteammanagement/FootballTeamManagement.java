@@ -5,13 +5,39 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FootballTeamManagement {
+    static Scanner sc = new Scanner(System.in);
+     static String normalizeString(String data){
+         String normed1 = data.toLowerCase().replaceAll("[^a-z]", "-");
+         boolean continuous=false;
+         String normed;
+         normed = "";
+         int i;
+         for(i=0; i<normed1.length()&&normed1.charAt(i)=='-'; i++){}
 
+         while(i<normed1.length())
+         {
+             if(normed1.charAt(i)=='-')
+             {
+                 if(!continuous){
+                     normed+='-';
+                     continuous=true;
+                 }
+             }
+             else{
+                 continuous=false;
+                 normed+=normed1.charAt(i);
+             }
+             i++;
+         }
+         if(normed.charAt(normed.length()-1)=='-') return normed.substring(0,normed.length()-1);
+         return normed;
+     }
      static String inputString(String prompt){
-     Scanner sc = new Scanner(System.in);
         String value;
         while(true){
             System.out.print(prompt);
             value = sc.nextLine().trim().toLowerCase();
+            value = normalizeString(value);
             if(!value.isEmpty()){
                 return value;
             }
@@ -29,7 +55,6 @@ public class FootballTeamManagement {
       }
 
       static int inputInt(String prompt, int min, int max){
-     Scanner sc = new Scanner(System.in);
         int value;
         while(true){
             System.out.print(prompt);
@@ -48,7 +73,6 @@ public class FootballTeamManagement {
       }
 
       static double inputSalary(String prompt){
-     Scanner sc = new Scanner(System.in);
         double value;
         while(true){
             System.out.print(prompt);
@@ -70,12 +94,13 @@ public class FootballTeamManagement {
 
     
     public static void main(String[] args) {
-        System.out.println("Hi");
+        
         trainingRecords tList= new trainingRecords();
         tList.trainingList=new ArrayList<>();
         tList.count=0;
         tList.addSession(2);
         tList.viewHistory();
+        
     }
     
 }

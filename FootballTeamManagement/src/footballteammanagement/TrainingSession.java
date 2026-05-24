@@ -89,11 +89,9 @@ public class TrainingSession {
     String getTopic(){
         return topic;
     }
-    boolean setTopic(String top){
+    void setTopic(String top){
         if(top.length()<=10)
             topic=top;
-        else return false;
-        return true;
     }
     void recordSession(){
         long id;
@@ -114,20 +112,8 @@ public class TrainingSession {
             if(!setDate(d,m,y))
                 System.out.println("Invalid date, please re-enter!");
         }while(!setDate(d,m,y));
-        do{
-        System.out.println("Enter location:");
-        sc.nextLine();
-            loc=sc.nextLine();
-            if(!setLocation(loc))
-                System.out.println("Location name invalid, please re-enter!");
-        }while(!setLocation(loc));
-        do{
-        System.out.println("Enter topic:");
-            top=sc.nextLine();
-            
-            if(!setTopic(top))
-                System.out.println("Topic name invalid, please re-enter!");
-        }while(!setTopic(top));
+        setLocation(FootballTeamManagement.inputString("Enter location: "));
+        setTopic(FootballTeamManagement.inputString("Enter topic: "));
         System.out.printf("Session ID %d recorded successfully%n", trainingID);
     }
     void printSessionRecord(){
