@@ -14,6 +14,7 @@ public class FootballTeamManagement {
          int i;
          for(i=0; i<normed1.length()&&normed1.charAt(i)=='-'; i++){}
 
+
          while(i<normed1.length())
          {
              if(normed1.charAt(i)=='-')
@@ -33,6 +34,7 @@ public class FootballTeamManagement {
          return normed;
      }
      static String inputString(String prompt){
+     Scanner sc = new Scanner(System.in);
         String value;
         while(true){
             System.out.print(prompt);
@@ -55,6 +57,7 @@ public class FootballTeamManagement {
       }
 
       static int inputInt(String prompt, int min, int max){
+     Scanner sc = new Scanner(System.in);
         int value;
         while(true){
             System.out.print(prompt);
@@ -73,6 +76,7 @@ public class FootballTeamManagement {
       }
 
       static double inputSalary(String prompt){
+     Scanner sc = new Scanner(System.in);
         double value;
         while(true){
             System.out.print(prompt);
