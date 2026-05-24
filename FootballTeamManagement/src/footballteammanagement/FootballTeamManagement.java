@@ -13,8 +13,6 @@ public class FootballTeamManagement {
          normed = "";
          int i;
          for(i=0; i<normed1.length()&&normed1.charAt(i)=='-'; i++){}
-
-
          while(i<normed1.length())
          {
              if(normed1.charAt(i)=='-')
@@ -34,7 +32,6 @@ public class FootballTeamManagement {
          return normed;
      }
      static String inputString(String prompt){
-     Scanner sc = new Scanner(System.in);
         String value;
         while(true){
             System.out.print(prompt);
@@ -52,12 +49,9 @@ public class FootballTeamManagement {
         || position.equals("defender")
         || position.equals("midfielder")
         || position.equals("forward");
-
-
       }
 
       static int inputInt(String prompt, int min, int max){
-     Scanner sc = new Scanner(System.in);
         int value;
         while(true){
             System.out.print(prompt);
@@ -67,7 +61,6 @@ public class FootballTeamManagement {
                 return value;
                } 
                System.out.println("Value must between " + min + " and " + max );
-                
             }
             catch(NumberFormatException e){
                 System.out.println("Invalid input.Please enter a whole number!");
@@ -76,7 +69,6 @@ public class FootballTeamManagement {
       }
 
       static double inputSalary(String prompt){
-     Scanner sc = new Scanner(System.in);
         double value;
         while(true){
             System.out.print(prompt);
