@@ -1,12 +1,14 @@
 
 package footballteammanagement;
-
+import Classes.Player;
+import Classes.TrainingSession;
+import Classes.Match;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FootballTeamManagement {
     static Scanner sc = new Scanner(System.in);
-     static String normalizeString(String data){
+    public static String normalizeString(String data){
          String normed1 = data.toLowerCase().replaceAll("[^a-z]", "-");
          boolean continuous=false;
          String normed;
@@ -31,7 +33,7 @@ public class FootballTeamManagement {
          if(normed.endsWith("-")) return normed.substring(0, normed.length()-1);
          return normed;
      }
-     static String inputString(String prompt){
+    public static String inputString(String prompt){
         String value;
         while(true){
             System.out.print(prompt);
@@ -44,14 +46,14 @@ public class FootballTeamManagement {
         }
      }
 
-      static boolean isValidPosition(String position){
+     public static boolean isValidPosition(String position){
         return position.equals("goalkeeper")
         || position.equals("defender")
         || position.equals("midfielder")
         || position.equals("forward");
       }
 
-      static int inputInt(String prompt, int min, int max){
+      public static int inputInt(String prompt, int min, int max){
         int value;
         while(true){
             System.out.print(prompt);
@@ -68,7 +70,7 @@ public class FootballTeamManagement {
         }
       }
 
-      static double inputSalary(String prompt){
+      public static double inputSalary(String prompt){
         double value;
         while(true){
             System.out.print(prompt);
