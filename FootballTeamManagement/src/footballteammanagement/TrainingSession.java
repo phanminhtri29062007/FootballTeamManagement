@@ -90,7 +90,7 @@ public class TrainingSession {
         return topic;
     }
     void setTopic(String top){
-        if(top.length()<=10)
+        if(top.length()<=20)
             topic=top;
     }
     void recordSession(){
@@ -117,7 +117,7 @@ public class TrainingSession {
         System.out.printf("Session ID %d recorded successfully%n", trainingID);
     }
     void printSessionRecord(){
-        System.out.printf("%010d|%4d/%02d/%04d|%10s|%10s%n", getID(), getDay(), getMonth(), getYear(), getLocation(), getTopic());
+        System.out.printf("%010d|%4d/%02d/%04d|%10s|%20s|%n", getID(), getDay(), getMonth(), getYear(), getLocation(), getTopic());
     }
 }
 
@@ -134,7 +134,7 @@ class trainingRecords {
         }
     }
     void viewHistory(){
-        System.out.printf("%10s%12s%10s%10s%n", "ID", "Date", "Location", "Topic");
+        System.out.printf("%10s%13s%11s%21s|%n", "ID", "Date", "Location", "Topic");
         for(int i=0; i<count; i++)
         {
             trainingList.get(i).printSessionRecord();

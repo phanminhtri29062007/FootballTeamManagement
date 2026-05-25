@@ -28,7 +28,7 @@ public class FootballTeamManagement {
              }
              i++;
          }
-         if(normed.charAt(normed.length()-1)=='-') return normed.substring(0,normed.length()-1);
+         if(normed.endsWith("-")) return normed.substring(0, normed.length()-1);
          return normed;
      }
      static String inputString(String prompt){
@@ -94,7 +94,7 @@ public class FootballTeamManagement {
         trainingRecords tList= new trainingRecords();
         tList.trainingList=new ArrayList<>();
         tList.count=0;
-        tList.addSession(2);
+        tList.addSession(1);
         tList.viewHistory();
         
     }
