@@ -89,14 +89,20 @@ public class FootballTeamManagement {
       }
 
     
-    public static void main(String[] args) {
+    public static void main(String [] args) {
         
-        trainingRecords tList= new trainingRecords();
-        tList.trainingList=new ArrayList<>();
-        tList.count=0;
-        tList.addSession(1);
-        tList.viewHistory();
-        
+         System.out.println("\n=== RUNNING MATCH DETAILS ===");
+        Match game1 = new Match();
+
+        game1.MatchDetailsInput();
+
+        System.out.println("Current Match List:");
+        game1.MatchInformation();
+
+        game1.UpdateLiveResult();
+
+        System.out.println("Updated Match List:");
+        game1.MatchInformation();
     }
     
 }
