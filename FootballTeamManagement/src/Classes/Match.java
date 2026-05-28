@@ -1,6 +1,5 @@
 package Classes;
 
-import Classes.player; // Import danh sách cầu thủ từ package Classes của nhóm
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
@@ -14,7 +13,7 @@ public class Match {
     private int HomeScore;
     private int OpponentScore;
 
-    void MatchDetailsInput() {
+   public void MatchDetailsInput() {
         this.MatchDateTime = LocalDateTime.now();
         Scanner sc = new Scanner(System.in);
         
@@ -112,7 +111,7 @@ public class Match {
         System.out.println("Match recorded successfully!\n");
     }
 
-    void UpdateLiveResult() {
+   public void UpdateLiveResult() {
         Scanner sc = new Scanner(System.in);
         System.out.println("----Update Live Score---");
         
@@ -134,31 +133,18 @@ public class Match {
         }
     }
 
-    void MatchInformation() {
+   public void MatchInformation() {
         System.out.format("%d |%20s:%d vs %20s:%d|%20s| %td/%tm/%ty %tl.%tM %tp %n", 
                 this.MatchID, this.HomeTeam, this.HomeScore, this.OpponentTeam, this.OpponentScore, this.Venue, 
                 this.MatchDateTime, this.MatchDateTime, this.MatchDateTime, this.MatchDateTime, this.MatchDateTime, this.MatchDateTime);
     }
-
-    void ScheduleDetails() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    void ChangeSchedules() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    void Team() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }
-
 // === LỚP SCHEDULE (ĐÃ HOÀN THÀNH) ===
-class Schedule {
+ class Schedule {
     Match matchObject; 
     String status = "Scheduled"; 
 
-    void ScheduleDetails() {
+   public void ScheduleDetails() {
         System.out.println("=================================================");
         System.out.println("--- SCHEDULE DETAILS ---");
         System.out.println("Current Status: " + this.status);
@@ -171,7 +157,7 @@ class Schedule {
         System.out.println("=================================================");
     }
 
-    void ChangeSchedules() {
+   public void ChangeSchedules() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter new status for this schedule (e.g., Postponed, Cancelled, Played):");
         this.status = sc.nextLine().trim();
@@ -180,11 +166,11 @@ class Schedule {
 }
 
 // === LỚP TEAM (ĐÃ HOÀN THÀNH) ===
-class Team {
+ class Team {
     String teamName;
     playerList listPlayer = new playerList(); 
 
-    void TeamInformation() {
+   public void TeamInformation() {
         Scanner sc = new Scanner(System.in);
         if (this.teamName == null || this.teamName.isEmpty()) {
             System.out.println("Enter Team Name to set profile:");

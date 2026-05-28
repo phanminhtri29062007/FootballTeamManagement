@@ -93,7 +93,7 @@ public class FootballTeamManagement {
     
     public static void main(String [] args) {
         
-          System.out.println("\n=== RUNNING MATCH DETAILS ===");
+        System.out.println("\n=== RUNNING MATCH DETAILS ===");
         Match game1 = new Match();
         Match game2 = new Match();
 
@@ -111,14 +111,27 @@ public class FootballTeamManagement {
         game1.MatchInformation();
         game2.MatchInformation();
         System.out.println("Schedule Details");
-        game1.ScheduleDetails();
-        game2.ScheduleDetails();
+        // 1. Tạo đối tượng Schedule để quản lý lịch trình
+        Schedule sche1 = new Schedule();
+        Schedule sche2 = new Schedule();
+        
+        // Cập nhật trận đấu vào trong lịch trình
+        sche1.matchObject = game1;
+        sche2.matchObject = game2;
+
+        sche1.ScheduleDetails();
+        sche2.ScheduleDetails();
+        
         System.out.println("Change Schedules");
-        game1.ChangeSchedules();
-        game2.ChangeSchedules();
+        sche1.ChangeSchedules();
+        sche2.ChangeSchedules();
+        
         System.out.println("Team");
-        game1.Team();
-        game2.Team();
+        // 2. Tạo đối tượng Team để quản lý đội bóng
+        Team team1 = new Team();
+        Team team2 = new Team();
+        
+        // Lưu ý: Tên hàm bạn viết trong class Team là TeamInformation(), không phải Team()
+        team1.TeamInformation(); 
+        team2.TeamInformation();
     }
-    
-}
