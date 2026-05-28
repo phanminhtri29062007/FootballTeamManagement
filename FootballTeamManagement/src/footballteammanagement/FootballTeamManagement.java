@@ -93,18 +93,32 @@ public class FootballTeamManagement {
     
     public static void main(String [] args) {
         
-         System.out.println("\n=== RUNNING MATCH DETAILS ===");
+          System.out.println("\n=== RUNNING MATCH DETAILS ===");
         Match game1 = new Match();
+        Match game2 = new Match();
 
         game1.MatchDetailsInput();
+        game2.MatchDetailsInput();
 
         System.out.println("Current Match List:");
         game1.MatchInformation();
-
+        game2.MatchInformation();
+        System.out.println("Update Live Result");
         game1.UpdateLiveResult();
+        game2.UpdateLiveResult();
 
         System.out.println("Updated Match List:");
         game1.MatchInformation();
+        game2.MatchInformation();
+        System.out.println("Schedule Details");
+        game1.ScheduleDetails();
+        game2.ScheduleDetails();
+        System.out.println("Change Schedules");
+        game1.ChangeSchedules();
+        game2.ChangeSchedules();
+        System.out.println("Team");
+        game1.Team();
+        game2.Team();
     }
     
 }

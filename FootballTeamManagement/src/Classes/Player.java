@@ -65,7 +65,7 @@ public class Player {
     }
 }
 
-class playerList {
+  class playerList {
     ArrayList<Player> list = new ArrayList<>();
     int count = 0;
 
