@@ -1,6 +1,6 @@
 package Classes;
 
-import Classes.player; // Import danh sách cầu thủ từ package Classes của nhóm
+import Classes.Player; // Import danh sách cầu thủ từ package Classes của nhóm
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
