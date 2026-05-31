@@ -7,88 +7,11 @@ package Classes;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Player {
-    public long playerID;
-    String fullName;
-    int age;
-    String nationality;
-    String position;
-    int shirtNumber;
-    int baseSalary;
-    int playerType;
-    boolean status;
-public Player() {
-    this.playerID = 0;
-    this.fullName = "Unknown";
-    this.age = 0;
-    this.nationality = "Unknown";
-    this.position = "Unknown";
-    this.shirtNumber = 0;
-    this.baseSalary = 0;
-    this.playerType = 0;
-    this.status = false;
-}
-
-    public Player(long playerID, String fullName, int age, String nationality, String position, int shirtNumber, int baseSalary, int playerType, boolean status) {
-        this.playerID = playerID;
-        this.fullName = fullName;
-        this.age = age;
-        this.nationality = nationality;
-        this.position = position;
-        this.shirtNumber = shirtNumber;
-        this.baseSalary = baseSalary;
-        this.playerType = playerType;
-        this.status = status;
-    }
-
-    //ENTER PLAYER
-    void enterPlayer() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter ID: ");
-        playerID = sc.nextLong();
-        sc.nextLine();
-
-        System.out.print("Enter full name: ");
-        fullName = sc.nextLine();
-
-        System.out.print("Enter age: ");
-        age = sc.nextInt();
-        sc.nextLine();
-
-        System.out.print("Enter nationality: ");
-        nationality = sc.nextLine();
-
-        System.out.print("Enter position: ");
-        position = sc.nextLine();
-
-        System.out.print("Enter shirt number: ");
-        shirtNumber = sc.nextInt();
-
-        System.out.print("Enter base salary: ");
-        baseSalary = sc.nextInt();
-
-        System.out.print("Enter player type: ");
-        playerType = sc.nextInt();
-
-        status = true;
-    }
-
-    //PRINT PLAYER
-    void printPlayer() {
-        System.out.println("ID: " + playerID);
-        System.out.println("Name: " + fullName);
-        System.out.println("Age: " + age);
-        System.out.println("Nationality: " + nationality);
-        System.out.println("Position: " + position);
-        System.out.println("Shirt Number: " + shirtNumber);
-        System.out.println("Salary: " + baseSalary);
-        System.out.println("Player Type: " + playerType);
-        System.out.println("Status: " + status);
-    }
-}
-
-  class playerList {
+/**
+ *
+ * @author phanm
+ */
+public class playerList {
     ArrayList<Player> list = new ArrayList<>();
     int count = 0;
 
@@ -101,6 +24,9 @@ public Player() {
         System.out.println("Add player successfully.");
     }
 
+    public ArrayList<Player> getList() {
+        return list;
+    }
     //ADD MANY PLAYERS
     void addManyPlayer() {
         Scanner sc = new Scanner(System.in);

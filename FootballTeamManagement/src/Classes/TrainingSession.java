@@ -4,24 +4,25 @@ package Classes;
 import footballteammanagement.FootballTeamManagement;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 public class TrainingSession {
     private long trainingID;
     private int[] date = new int[3];
     private String location;
     private String topic;
-    private ArrayList<Long> presentID = new ArrayList<>();
+    private ArrayList<Long> presentID;
     public TrainingSession(){
         trainingID=-1;
         date=new int[]{1,1,1};
         location="Unknown";
         topic="Unknown";
+        presentID= new ArrayList<>();
     }
-    public TrainingSession(long id, int d, int m, int y, String loc, String top) {
+    public TrainingSession(long id, int d, int m, int y, String loc, String top, ArrayList<Long> presentID) {
     setID(id);
     setDate(d, m, y);
     setLocation(loc);
     setTopic(top);
+        setPresentList(presentID);
 }
     public boolean setID(long id){
         if(id>0&&id<1000000000)
@@ -91,7 +92,54 @@ public class TrainingSession {
         {topic=top; return true;}
         return false;
     }
-    public void recordSession(){
+    private ArrayList<Long> recordAbsence(playerList lis){
+        Scanner sc= new Scanner(System.in);
+        int num;
+        System.out.println("Enter absence number:");
+        num=sc.nextInt();
+        ArrayList<Long> absenceID = new ArrayList<>();
+        if(num<=0) return absenceID;
+        long playerID;
+        boolean valid;
+        do{
+            absenceID = new ArrayList<>();
+            valid=true;
+            System.out.printf("Enter %d IDs of absent players:\n", num);
+            for (int i = 0; i < num; i++) {
+                playerID = sc.nextLong();
+                if (!lis.findPlayer(playerID)) {
+                    System.err.printf("Player ID:%d not found! Please re-enter.\n", playerID);
+                    valid = false;
+                    break;
+                } else if (absenceID.contains(playerID)) {
+                    System.err.printf("Player ID:%d is duplicate! Please re-enter.\n", playerID);
+                    valid = false;
+                    break;
+                } else {
+                    absenceID.add(playerID);
+                }
+            }
+        }while(!valid);
+        return absenceID;
+    }
+    private ArrayList<Long> getPresentList(ArrayList<Long> absenceID, playerList lis) {
+        ArrayList<Long> presentID = new ArrayList<>();
+        for (Player p : lis.list) {
+            if (p.status&& !absenceID.contains(p.playerID)) {
+                presentID.add(p.playerID);
+            }
+        }
+        return presentID;
+    }
+    public void setPresentList(ArrayList<Long> list)
+    {
+        this.presentID=list;
+    }
+    public ArrayList<Long> getPresence()
+    {
+        return presentID;
+    }
+    public void recordSession(playerList lis){
         long id;
         int d, m, y;
         String loc, top;
@@ -123,6 +171,7 @@ public class TrainingSession {
         if(!valid)
                 System.out.println("Topic too long, please re-enter!");
         }while(!valid);
+        setPresentList(getPresentList(recordAbsence(lis), lis));
         System.out.printf("Session ID %d recorded successfully%n", trainingID);
     }
     public void printSessionRecord(){
