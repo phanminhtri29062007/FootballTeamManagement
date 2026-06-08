@@ -108,7 +108,7 @@ public class FootballTeamManagement {
 //        ArrayList<Long> present = new ArrayList<>(Arrays.asList(1L, 3L, 4L));
 //        TrainingSession ses = new TrainingSession(123, 1, 2, 3, "idk", "idk", present);
 //        recList.addSession(ses);
-        recList.loadFromFile();
+//        recList.loadFromFile();
         recList.printSessionDetails(123);
         recList.saveToFile();
     }

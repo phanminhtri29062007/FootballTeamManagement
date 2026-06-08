@@ -76,7 +76,7 @@ public class TrainingRecords {
         System.err.println("Error saving training records: " + e.getMessage());
     }
 }
-
+/*
 public void loadFromFile() {
     try (Scanner sc = new Scanner(new File("./FootballTeamManagement/Datas/TrainingRecordsData.txt"))) {
         trainingList.clear();
@@ -110,5 +110,5 @@ public void loadFromFile() {
         System.err.println("Error loading training records: " + e.getMessage());
     }
 }
-    
+    */
 }
