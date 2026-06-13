@@ -1,6 +1,6 @@
 
 package Classes;
-
+import java.time.LocalDate;
 import footballteammanagement.FootballTeamManagement;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -92,7 +92,7 @@ public class TrainingSession {
         {topic=top; return true;}
         return false;
     }
-    private ArrayList<Long> recordAbsence(playerList lis){
+    private ArrayList<Long> recordAbsence(ArrayList<Player> lis){
         Scanner sc= new Scanner(System.in);
         int num;
         System.out.println("Enter absence number:");
@@ -107,7 +107,7 @@ public class TrainingSession {
             System.out.printf("Enter %d IDs of absent players:\n", num);
             for (int i = 0; i < num; i++) {
                 playerID = sc.nextLong();
-                if (!lis.findPlayer(playerID)) {
+                if (helperFunctions.findPlayer(playerID, lis)==-1) {
                     System.err.printf("Player ID:%d not found! Please re-enter.\n", playerID);
                     valid = false;
                     break;
@@ -122,11 +122,11 @@ public class TrainingSession {
         }while(!valid);
         return absenceID;
     }
-    private ArrayList<Long> getPresentList(ArrayList<Long> absenceID, playerList lis) {
+    private ArrayList<Long> getPresentList(ArrayList<Long> absenceID, ArrayList<Player> lis) {
         ArrayList<Long> presentID = new ArrayList<>();
-        for (Player p : lis.list) {
-            if (p.status&& !absenceID.contains(p.playerID)) {
-                presentID.add(p.playerID);
+        for (Player p : lis) {
+            if (p.isStatus()&& !absenceID.contains(p.getPlayerID())) {
+                presentID.add(p.getPlayerID());
             }
         }
         return presentID;
@@ -139,10 +139,9 @@ public class TrainingSession {
     {
         return presentID;
     }
-    public void recordSession(playerList lis){
+    public void recordSession(ArrayList lis){
         long id;
         int d, m, y;
-        String loc, top;
         boolean valid;
         Scanner sc= new Scanner(System.in);
         do {
@@ -162,12 +161,12 @@ public class TrainingSession {
                 System.out.println("Invalid date, please re-enter!");
         }while(!valid);
         do{
-        valid=setLocation(FootballTeamManagement.inputString("Enter location(max 10 chars): "));
+        valid=setLocation(helperFunctions.inputString("Enter location(max 10 chars): "));
         if(!valid)
                 System.out.println("Location name too long, please re-enter!");
         }while(!valid);
         do{
-        valid=setTopic(FootballTeamManagement.inputString("Enter topic(max 20 chars): "));
+        valid=setTopic(helperFunctions.inputString("Enter topic(max 20 chars): "));
         if(!valid)
                 System.out.println("Topic too long, please re-enter!");
         }while(!valid);

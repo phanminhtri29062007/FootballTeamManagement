@@ -168,7 +168,7 @@ public class Match {
 // === LỚP TEAM (ĐÃ HOÀN THÀNH) ===
  class Team {
     String teamName;
-    playerList listPlayer = new playerList(); 
+    ArrayList listPlayer = new ArrayList(); 
 
    public void TeamInformation() {
         Scanner sc = new Scanner(System.in);

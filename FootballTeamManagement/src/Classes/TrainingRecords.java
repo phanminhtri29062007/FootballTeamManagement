@@ -18,7 +18,7 @@ public class TrainingRecords {
         trainingList=new ArrayList<TrainingSession>();
         count=0;
     }
-    public void addSession(int req, playerList list){
+    public void addSession(int req, ArrayList list){
         for(int i=0; i<req; i++)
         {
             TrainingSession TS=new TrainingSession();

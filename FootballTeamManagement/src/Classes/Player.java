@@ -3,21 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Classes;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
-    public long playerID;
-    String fullName;
-    int age;
-    String nationality;
-    String position;
-    int shirtNumber;
-    int baseSalary;
-    int playerType;
-    boolean status;
-public Player() {
+    private long playerID;
+    private String fullName;
+    private int age;
+    private String nationality;
+    private String position;
+    private int shirtNumber;
+    private float baseSalary;
+    private boolean status;
+    public Player() {
     this.playerID = 0;
     this.fullName = "Unknown";
     this.age = 0;
@@ -25,11 +23,11 @@ public Player() {
     this.position = "Unknown";
     this.shirtNumber = 0;
     this.baseSalary = 0;
-    this.playerType = 0;
     this.status = false;
 }
-
-    public Player(long playerID, String fullName, int age, String nationality, String position, int shirtNumber, int baseSalary, int playerType, boolean status) {
+    
+    public Player(long playerID, String fullName, int age, String nationality, String position, 
+              int shirtNumber, int baseSalary, boolean status) {
         this.playerID = playerID;
         this.fullName = fullName;
         this.age = age;
@@ -37,41 +35,160 @@ public Player() {
         this.position = position;
         this.shirtNumber = shirtNumber;
         this.baseSalary = baseSalary;
-        this.playerType = playerType;
         this.status = status;
     }
+    //getters
+    public long getPlayerID() {
+    return playerID;}
+    
+    public String getFullName() {
+        return fullName;}
+    
+    public int getAge() {
+        return age;}
+    
+    public String getNationality() {
+        return nationality;}
+    
+    public String getPosition() {
+        return position;}
+    
+    public int getShirtNumber() {
+        return shirtNumber;}
+    
+    public float getBaseSalary() {
+        return baseSalary;}
 
+    public boolean isStatus() {
+        return status;
+    }
+    //input validation
+    boolean validate(String s)
+    {
+        return !s.isEmpty();
+    }
+    //setters
+
+    public boolean setPlayerID(long playerID, ArrayList<Player> list) {
+        if(helperFunctions.findPlayer(playerID, list)==-1) return false;
+        this.playerID = playerID;
+        return true;
+    }
+    
+    public boolean setFullName(String fullName) {
+        if(!validate(fullName)) return false;
+        this.fullName = fullName;
+        return true;
+    }
+    
+    public boolean setAge(int age) {
+        if(age<16 || age>45) return false;
+        this.age = age;
+        return true;}
+    
+    public boolean setNationality(String nationality) {
+        if(validate(nationality)) return false;
+        this.nationality = nationality;
+        return true;}
+    
+    public boolean setPosition(int positionIndex) {
+        switch (positionIndex) {
+            case 1:
+                this.position = ("Goalkeeper");
+                return true;
+            case 2:
+                this.position = ("Defender");
+                return true;
+            case 3:
+                this.position = ("Midfielder");
+                return true;
+            case 4:
+                this.position = ("Forward");
+                return true;
+            default:
+                return false;
+            }
+    }
+    
+    public boolean setShirtNumber(int shirtNumber) {
+        if(shirtNumber<1||shirtNumber>99) return false;
+        this.shirtNumber = shirtNumber;
+    return true;}
+    
+    public boolean setBaseSalary(float baseSalary) {
+        if(baseSalary<=0.0) return false;
+        this.baseSalary = baseSalary;
+        return true;}
+   
+    public boolean setStatus(boolean status) {
+        this.status = status;
+        return true;
+    }
     //ENTER PLAYER
-    void enterPlayer() {
+    void enterPlayerInfo(Long ID, ArrayList<Player> list, boolean activate) {
+        int tmpAge;
+        int positionIndex;
+        float tmpBaseSalary;
+
         Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter ID: ");
-        playerID = sc.nextLong();
-        sc.nextLine();
-
+        boolean validity;
+        
         System.out.print("Enter full name: ");
-        fullName = sc.nextLine();
-
-        System.out.print("Enter age: ");
-        age = sc.nextInt();
-        sc.nextLine();
+        do{
+            validity=setFullName(helperFunctions.inputString("Enter full name (max 20 chars: "));
+        if(!validity)
+                System.err.println("Name too long, please re-enter!");
+        }while(!validity);
+        sc = new Scanner(System.in);
+        System.out.print("Enter age(16-45): ");
+        do {
+            tmpAge=sc.nextInt();
+            validity=setAge(tmpAge);
+            if(!validity) System.err.println("Invalid age, please re-enter(16-45):");
+        } while (!validity);
+        sc = new Scanner(System.in);
 
         System.out.print("Enter nationality: ");
-        nationality = sc.nextLine();
-
-        System.out.print("Enter position: ");
-        position = sc.nextLine();
-
-        System.out.print("Enter shirt number: ");
-        shirtNumber = sc.nextInt();
-
+        do{
+        validity=setNationality(helperFunctions.inputString("Enter nationality (max 15 chars: "));
+        }while(!validity);
+        System.out.println("1-Goal keeper\t2-Defender\t3-Midfielder\t4Forward");
+        System.out.print("Enter position (1-4): ");
+        positionIndex=sc.nextInt();
+        do{
+            validity=setPosition(positionIndex);
+            if(!validity)System.out.println("Invalid input, please re-enter position:");
+        }while(!validity);
+        System.out.print("Enter shirt number(1-99): ");
+        do {
+            validity=setShirtNumber(sc.nextInt());
+            if(activate && validity) 
+                activate=helperFunctions.checkSNavailability(getShirtNumber(), list);
+            if(!validity) 
+                System.err.println("Invalid shirt number, please re-enter(1-99):");
+        } while (!validity);
         System.out.print("Enter base salary: ");
-        baseSalary = sc.nextInt();
-
-        System.out.print("Enter player type: ");
-        playerType = sc.nextInt();
-
-        status = true;
+        do {
+            tmpBaseSalary = sc.nextFloat();
+            validity=setBaseSalary(tmpBaseSalary);
+            if(!validity) System.err.println("Invalid salary, please re-enter:");
+        } while (!validity);
+        if(!activate){
+            System.out.println("No more available shirt numbers left, status set to deactivated");
+            setStatus(false);
+        }
+        else{
+            System.out.println("Activate this player?(true/false)");
+            do{
+            try {
+                validity=setStatus(sc.nextBoolean());
+            } catch (Exception InputMismatchException) {
+                validity=false;
+                sc=new Scanner(System.in);
+            }
+            if(!validity) System.out.println("Input mismatch, please re-enter(true/false)");
+            }while(!validity);
+        }
     }
 
     //PRINT PLAYER
@@ -83,175 +200,6 @@ public Player() {
         System.out.println("Position: " + position);
         System.out.println("Shirt Number: " + shirtNumber);
         System.out.println("Salary: " + baseSalary);
-        System.out.println("Player Type: " + playerType);
         System.out.println("Status: " + status);
-    }
-}
-
-  class playerList {
-    ArrayList<Player> list = new ArrayList<>();
-    int count = 0;
-
-    //ADD PLAYER
-    void addPlayer() {
-        Player p = new Player();
-        p.enterPlayer();
-        list.add(p);
-        count++;
-        System.out.println("Add player successfully.");
-    }
-
-    //ADD MANY PLAYERS
-    void addManyPlayer() {
-        Scanner sc = new Scanner(System.in);
-        boolean cont = false;
-
-        do {
-            Player p = new Player();
-            p.enterPlayer();
-            list.add(p);
-            count++;
-
-            System.out.println("Add more? (true|false)");
-            cont = sc.nextBoolean();
-
-        } while (cont);
-
-        System.out.println("Finish adding players.");
-    }
-    
-    //UPDATE
-    void updatePlayerInfo() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter player ID to update: ");
-        long id = sc.nextLong();
-        sc.nextLine();
-
-        boolean found = false;
-
-        for (Player p : list) {
-            if (p.playerID == id && p.status == true) {
-
-                System.out.print("Enter new full name: ");
-                p.fullName = sc.nextLine();
-
-                System.out.print("Enter new age: ");
-                p.age = sc.nextInt();
-                sc.nextLine();
-
-                System.out.print("Enter new nationality: ");
-                p.nationality = sc.nextLine();
-
-                System.out.print("Enter new position: ");
-                p.position = sc.nextLine();
-
-                System.out.print("Enter new shirt number: ");
-                p.shirtNumber = sc.nextInt();
-
-                System.out.print("Enter new base salary: ");
-                p.baseSalary = sc.nextInt();
-
-                System.out.print("Enter new player type: ");
-                p.playerType = sc.nextInt();
-
-                System.out.println("Update successful.");
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            System.out.println("Player not found.");
-        }
-    }
-
-    //DEACTIVATE
-    void deactivatePlayer() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter player ID to deactivate: ");
-        long id = sc.nextLong();
-
-        boolean found = false;
-
-        for (Player p : list) {
-            if (p.playerID == id && p.status == true) {
-                p.status = false;
-                System.out.println("Deactivate successful.");
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            System.out.println("Player not found.");
-        }
-    }
-
-    //PRINT ALL
-    void printAllPlayer() {
-        if (list.isEmpty()) {
-            System.out.println("No players in list.");
-            return;
-        }
-
-        for (Player p : list) {
-            if (p.status == true) {
-                p.printPlayer();
-                System.out.println("------------------");
-            }
-        }
-    }
-
-    //SEARCH BY NAME
-    void searchPlayer() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter player name: ");
-        String name = sc.nextLine();
-
-        boolean found = false;
-
-        for (Player p : list) {
-            if (p.fullName.toLowerCase().contains(name.toLowerCase())
-                    && p.status == true) {
-                p.printPlayer();
-                found = true;
-            }
-        }
-
-        if (!found) {
-            System.out.println("Player not found.");
-        }
-    }
-    //search by id
-    public boolean findPlayer(long id) {
-    for (Player p : list) {
-        if (p.playerID == id)
-            return true;
-    }
-    return false;
-}
-    //PRINT BY ID
-    void printPlayerInfo() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter player ID: ");
-        long id = sc.nextLong();
-
-        boolean found = false;
-
-        for (Player p : list) {
-            if (p.playerID == id && p.status == true) {
-                p.printPlayer();
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            System.out.println("Player not found.");
-        }
     }
 }
