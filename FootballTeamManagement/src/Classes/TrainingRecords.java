@@ -15,14 +15,14 @@ public class TrainingRecords {
     private int count;
 
     public TrainingRecords() {
-        trainingList=new ArrayList<TrainingSession>();
+        trainingList=new ArrayList<>();
         count=0;
     }
-    public void addSession(int req, ArrayList list){
+    public void addSession(int req, ArrayList<Player> list){
         for(int i=0; i<req; i++)
         {
             TrainingSession TS=new TrainingSession();
-            TS.recordSession(list);
+            TS.recordSession(list, trainingList );
             trainingList.add(TS);
             count++;
         }

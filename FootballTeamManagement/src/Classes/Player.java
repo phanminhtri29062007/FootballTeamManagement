@@ -27,7 +27,7 @@ public class Player {
 }
     
     public Player(long playerID, String fullName, int age, String nationality, String position, 
-              int shirtNumber, int baseSalary, boolean status) {
+              int shirtNumber, float baseSalary, boolean status) {
         this.playerID = playerID;
         this.fullName = fullName;
         this.age = age;
@@ -65,7 +65,7 @@ public class Player {
     //input validation
     boolean validate(String s)
     {
-        return !s.isEmpty();
+        return s.length()<20;
     }
     //setters
 
@@ -87,7 +87,7 @@ public class Player {
         return true;}
     
     public boolean setNationality(String nationality) {
-        if(validate(nationality)) return false;
+        if(!validate(nationality)) return false;
         this.nationality = nationality;
         return true;}
     
@@ -110,8 +110,8 @@ public class Player {
             }
     }
     
-    public boolean setShirtNumber(int shirtNumber) {
-        if(shirtNumber<1||shirtNumber>99) return false;
+    public boolean setShirtNumber(int shirtNumber, ArrayList<Player> list) {
+        if((shirtNumber<1||shirtNumber>99) || helperFunctions.checkSNavailability(shirtNumber, list)) return false;
         this.shirtNumber = shirtNumber;
     return true;}
     
@@ -132,8 +132,6 @@ public class Player {
 
         Scanner sc = new Scanner(System.in);
         boolean validity;
-        
-        System.out.print("Enter full name: ");
         do{
             validity=setFullName(helperFunctions.inputString("Enter full name (max 20 chars: "));
         if(!validity)
@@ -147,10 +145,8 @@ public class Player {
             if(!validity) System.err.println("Invalid age, please re-enter(16-45):");
         } while (!validity);
         sc = new Scanner(System.in);
-
-        System.out.print("Enter nationality: ");
         do{
-        validity=setNationality(helperFunctions.inputString("Enter nationality (max 15 chars: "));
+        validity=setNationality(helperFunctions.inputString("Enter nationality (max 20 chars: "));
         }while(!validity);
         System.out.println("1-Goal keeper\t2-Defender\t3-Midfielder\t4Forward");
         System.out.print("Enter position (1-4): ");
@@ -160,10 +156,12 @@ public class Player {
             if(!validity)System.out.println("Invalid input, please re-enter position:");
         }while(!validity);
         System.out.print("Enter shirt number(1-99): ");
+        int sn;
         do {
-            validity=setShirtNumber(sc.nextInt());
+            sn=sc.nextInt();
+            validity=setShirtNumber(sn, list);
             if(activate && validity) 
-                activate=helperFunctions.checkSNavailability(getShirtNumber(), list);
+                activate=setShirtNumber(shirtNumber, list);
             if(!validity) 
                 System.err.println("Invalid shirt number, please re-enter(1-99):");
         } while (!validity);
@@ -174,7 +172,7 @@ public class Player {
             if(!validity) System.err.println("Invalid salary, please re-enter:");
         } while (!validity);
         if(!activate){
-            System.out.println("No more available shirt numbers left, status set to deactivated");
+            System.out.println("No more shirt numbers unavailanle, status set to deactivated");
             setStatus(false);
         }
         else{
@@ -199,7 +197,6 @@ public class Player {
         System.out.println("Nationality: " + nationality);
         System.out.println("Position: " + position);
         System.out.println("Shirt Number: " + shirtNumber);
-        System.out.println("Salary: " + baseSalary);
         System.out.println("Status: " + status);
     }
 }

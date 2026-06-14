@@ -1,4 +1,3 @@
-
 package Classes;
 import java.time.LocalDate;
 import footballteammanagement.FootballTeamManagement;
@@ -31,6 +30,14 @@ public class TrainingSession {
             return true;
         }
         return false;
+    }
+    public boolean setID(long id, ArrayList<TrainingSession> existing){
+        if(id<=0 || id>=1000000000) return false;
+        for(int i=0; i<existing.size(); i++){
+            if(existing.get(i).getID()==id) return false;
+        }
+        trainingID=id;
+        return true;
     }
     public long getID(){
         return trainingID;
@@ -139,7 +146,7 @@ public class TrainingSession {
     {
         return presentID;
     }
-    public void recordSession(ArrayList lis){
+    public void recordSession(ArrayList<Player> lis, ArrayList<TrainingSession> existing){
         long id;
         int d, m, y;
         boolean valid;
@@ -147,9 +154,9 @@ public class TrainingSession {
         do {
             System.out.println("Enter Session ID:");
             id = sc.nextLong();
-            valid = setID(id);
+            valid = setID(id, existing);
             if (!valid)
-                System.out.println("Invalid ID, please re-enter!");
+                System.out.println("Invalid or duplicate ID, please re-enter!");
         } while (!valid);
         do{
         System.out.println("Enter date(dd mm yyyy):");
