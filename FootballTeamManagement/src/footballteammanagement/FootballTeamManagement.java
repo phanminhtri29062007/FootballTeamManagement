@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import Classes.TrainingRecords;
 import java.util.Arrays;
+import Classes.MatchList;
 public class FootballTeamManagement {    
     public static void main(String [] args) {
 //        playerList lis=new playerList();
@@ -27,6 +28,8 @@ public class FootballTeamManagement {
 //        recList.loadFromFile();
 //        recList.printSessionDetails(123);
 //        recList.saveToFile();
-        System.out.print("1-Goal keeper\t2-Defender\t3-Midfielder\t4Forward");
+       MatchList manager = new MatchList();
+        
+        manager.menu();
     }
 }

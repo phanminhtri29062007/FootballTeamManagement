@@ -1,185 +1,171 @@
 package Classes;
-import Classes.Player; // Import danh sách cầu thủ từ package Classes của nhóm
-import java.time.LocalDateTime;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Match {
-    // Thuộc tính private bảo đảm tính đóng gói (Encapsulation)
-    private int MatchID;
-    private String HomeTeam;
-    private String OpponentTeam;
-    private String Venue;
-    private LocalDateTime MatchDateTime;
-    private int HomeScore;
-    private int OpponentScore;
+    // Khai báo các thuộc atính private để đảm bảo tính đóng gói (Encapsulation)
+    private String id;
+    private String homeTeam;
+    private String opponent;
+    private String venue;
+    private String matchDateTime;
+    private int homeScore;
+    private int opponentScore;
+    
+    // Using has-
+    private PlayerList teamRoster;
 
-   public void MatchDetailsInput() {
-        this.MatchDateTime = LocalDateTime.now();
+    // CONSTRUCTOR WITHOUT PARAMETER
+    public Match() {
+        this.id = "Unknown";
+        this.homeTeam = "Unknown";
+        this.opponent = "Unknown";
+        this.venue = "Unknown";
+        this.matchDateTime = "Unknown";
+        this.homeScore = 0;      
+        this.opponentScore = 0;
+        this.teamRoster = new PlayerList();
+    }
+
+    // CONSTRUCTOR WITH PARAMETER
+    public Match(String id, String homeTeam, String opponent, String venue, String matchDateTime) {
+        this.id = id;
+        this.homeTeam = homeTeam;
+        this.opponent = opponent;
+        this.venue = venue;
+        this.matchDateTime = matchDateTime;
+        this.homeScore = 0;
+        this.opponentScore = 0;
+        this.teamRoster = new PlayerList();
+    }
+
+    // ================= GETTERS =================
+    public String getId() { return id; }
+    public String getHomeTeam() { return homeTeam; }
+    public String getOpponent() { return opponent; }
+    public String getVenue() { return venue; }
+    public String getMatchDateTime() { return matchDateTime; }
+    public int getHomeScore() { return homeScore; }
+    public int getOpponentScore() { return opponentScore; }
+    public PlayerList getTeamRoster() { return teamRoster; }
+
+    // ================= SETTERS CÓ ĐIỀU KIỆN (VALIDATION) =================
+    
+    public boolean setId(String id) {
+        if (id == null || id.trim().isEmpty()) return false; // IF EMPTY RETURN FALSE
+        this.id = id;
+        return true;
+    }
+
+    public boolean setHomeTeam(String homeTeam) {
+        if (homeTeam == null || homeTeam.trim().isEmpty()) return false;
+        this.homeTeam = homeTeam;
+        return true;
+    }
+
+    public boolean setOpponent(String opponent) {
+        if (opponent == null || opponent.trim().isEmpty()) return false;
+        // OPPONENT NAME CAN NOT BE THE SAME WITH HOMETEAM
+        if (opponent.equalsIgnoreCase(this.homeTeam)) return false; 
+        this.opponent = opponent;
+        return true;
+    }
+
+    public boolean setVenue(String venue) {
+        if (venue == null || venue.trim().isEmpty()) return false;
+        this.venue = venue;
+        return true;
+    }
+
+    public boolean setMatchDateTime(String matchDateTime) {
+        if (matchDateTime == null || matchDateTime.trim().isEmpty()) return false; 
+        this.matchDateTime = matchDateTime;
+        return true;
+    }
+
+    public boolean setScores(int homeScore, int opponentScore) {
+        if (homeScore < 0 || opponentScore < 0) return false;
+        this.homeScore = homeScore;
+        this.opponentScore = opponentScore;
+        return true;
+    }
+
+    public void inputMatchDetails() {
         Scanner sc = new Scanner(System.in);
+        boolean validity;
+
+        System.out.println("====== MATCH INFORMATION ======");
+
+        do {
+            System.out.print("Enter MatchID: ");
+            String tmpId = sc.nextLine();
+            validity = setId(tmpId);
+            if (!validity) System.out.println("Error: MatchID Can't Be Empty.");
+        } while (!validity);
+
+        do {
+            System.out.print("Enter Home Team: ");
+            String tmpHome = sc.nextLine();
+            validity = setHomeTeam(tmpHome);
+            if (!validity) System.out.println("Error: HomeTeam Can't Be Empty!.");
+        } while (!validity);
+
+        do {
+            System.out.print("Enter Opponent Team: ");
+            String tmpOpp = sc.nextLine();
+            validity = setOpponent(tmpOpp);
+            if (!validity) System.out.println("Error: OpponentTeam Can't Be The Same Name With HomeTeam!");
+        } while (!validity);
+
+        do {
+            System.out.print("Enter Venue: ");
+            String tmpVenue = sc.nextLine();
+            validity = setVenue(tmpVenue);
+            if (!validity) System.out.println("Error: Venue Can't Be Empty");
+        } while (!validity);
+
+        do {
+            System.out.print("Enter MatchDateTime: ");
+            String tmpTime = sc.nextLine();
+            validity = setMatchDateTime(tmpTime);
+            if (!validity) System.out.println("Error: Match Time Can't Be Empty!");
+        } while (!validity);
         
-        // 1. Nhập và kiểm tra Match ID
-        while (true) {
-            System.out.println("MatchID:");
-            if (sc.hasNextInt()) {
-                this.MatchID = sc.nextInt();
-                sc.nextLine(); // Nuốt phím Enter
-                break;
-            } else {
-                System.out.println("Invalid Match ID! Must be a number.");
-                sc.nextLine(); // Xóa bộ nhớ đệm lỗi
-            }
-        }
-
-        // 2. Nhập và kiểm tra HomeTeam (Chỉ chữ và khoảng trắng, không nhận số hay ký tự lạ)
-        while (true) {
-            System.out.println("HomeTeam:");
-            this.HomeTeam = sc.nextLine().trim();
-            if (this.HomeTeam.isEmpty()) {
-                System.out.println("Team Name Cannot Be Empty!");
-            } else if (!this.HomeTeam.matches("^[a-zA-Z\\s]+$")) { // Force to enter only 
-                System.out.println("Invalid Name! Team name cannot contain numbers or special characters.");
-            } else {
-                break;
-            }
-        }
-
-        // 3. Nhập và kiểm tra OpponentTeam (Không trống, không chứa số, không trùng HomeTeam)
-        while (true) {
-            System.out.println("OpponentTeam:");
-            this.OpponentTeam = sc.nextLine().trim();
-            if (this.OpponentTeam.isEmpty()) {
-                System.out.println("Team Name Cannot Be Empty!");
-            } else if (!this.OpponentTeam.matches("^[a-zA-Z\\s]+$")) { // Ép buộc chỉ nhập chuỗi chữ
-                System.out.println("Invalid Name! Team name cannot contain numbers or special characters.");
-            } else if (this.OpponentTeam.equalsIgnoreCase(this.HomeTeam)) {
-                System.out.println("Opponent Cannot Be The Same With HomeTeam!");
-            } else {
-                break;
-            }
-        }
-
-        // 4. Nhập và kiểm tra Venue
-        while (true) {
-            System.out.println("Venue:");
-            this.Venue = sc.nextLine().trim();
-            if (this.Venue.isEmpty()) {
-                System.out.println("Venue Cannot Be Empty!");
-            } else {
-                break;
-            }
-        }
-
-        // 5. Nhập Ngày giờ thi đấu (Giữ nguyên logic kiểm tra của bạn)
-        System.out.println("--Enter Match Date & Time--");
-        System.out.println("Enter Day:");
-        int day = sc.nextInt();
-        while (day < 1 || day > 31) {
-            System.out.println("Day Declined");
-            day = sc.nextInt();
-        }
-
-        System.out.println("Enter Month:");
-        int month = sc.nextInt();
-        while (month < 1 || month > 12) {
-            System.out.println("Month Declined");
-            month = sc.nextInt();
-        }
-
-        System.out.println("Enter Year:");
-        int year = sc.nextInt();
-        while (year < 2000 || year > 2100) {
-            System.out.println("Year Declined");
-            year = sc.nextInt();
-        }
-
-        System.out.println("Enter Hour:");
-        int hour = sc.nextInt();
-        while (hour < 0 || hour > 23) {
-            System.out.println("Hour Declined");
-            hour = sc.nextInt();
-        }
-
-        System.out.println("Enter Minute:");
-        int minute = sc.nextInt();
-        while (minute < 0 || minute > 59) {
-            System.out.println("Minute Declined");
-            minute = sc.nextInt();
-        }
-        sc.nextLine(); // Nuốt phím Enter cuối cùng
-
-        this.MatchDateTime = LocalDateTime.of(year, month, day, hour, minute);
-        System.out.println("Match recorded successfully!\n");
+        System.out.println(">>> Save Match Information Successfully! <<<\n");
     }
 
-   public void UpdateLiveResult() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("----Update Live Score---");
-        
-        System.out.println("Current Score " + this.HomeTeam + ":");
-        if (sc.hasNextInt()) {
-            this.HomeScore = sc.nextInt();
-            sc.nextLine();
+    public void inputPlayerForMatch() {
+        System.out.println("--- PlayerList Add To A Match ---");
+        teamRoster.addPlayer(); 
+    }
+
+    public void MatchInformation() {
+        System.out.println("Match ID: " + id + " | " + homeTeam + " vs " + opponent);
+    }
+
+    public void MatchLiveResult(int homeScore, int opponentScore) {
+        if (setScores(homeScore, opponentScore)) {
+            System.out.println("Update Score: " + homeTeam + " " + this.homeScore + " - " + this.opponentScore + " " + opponent);
         } else {
-            System.out.println("Cannot Update Score For HomeTeam. Invalid Input.");
-            sc.nextLine();
-        }
-
-        System.out.println("Current Score " + this.OpponentTeam + ":");
-        if (sc.hasNextInt()) {
-            this.OpponentScore = sc.nextInt();
-            sc.nextLine();
-        } else {
-            System.out.println("Cannot Update Score For OpponentTeam. Invalid Input.");
+            System.err.println("Error: Invalid Score (Can't smaller than 0)!");
         }
     }
 
-   public void MatchInformation() {
-        System.out.format("%d |%20s:%d vs %20s:%d|%20s| %td/%tm/%ty %tl.%tM %tp %n", 
-                this.MatchID, this.HomeTeam, this.HomeScore, this.OpponentTeam, this.OpponentScore, this.Venue, 
-                this.MatchDateTime, this.MatchDateTime, this.MatchDateTime, this.MatchDateTime, this.MatchDateTime, this.MatchDateTime);
+    public void ScheduleDetails() {
+        System.out.println("Match Time Begin: " + matchDateTime + " tại: " + venue);
     }
-}
-// === LỚP SCHEDULE (ĐÃ HOÀN THÀNH) ===
- class Schedule {
-    Match matchObject; 
-    String status = "Scheduled"; 
 
-   public void ScheduleDetails() {
-        System.out.println("=================================================");
-        System.out.println("--- SCHEDULE DETAILS ---");
-        System.out.println("Current Status: " + this.status);
-        if (this.matchObject != null) {
-            System.out.println("Linked Match Information:");
-            this.matchObject.MatchInformation();
-        } else {
-            System.out.println("No match has been assigned to this schedule yet.");
+    public void ChangeKickOff(String newDateTime) {
+        if (setMatchDateTime(newDateTime)) {
+            System.out.println("Time Competition Change To: " + matchDateTime);
         }
-        System.out.println("=================================================");
     }
 
-   public void ChangeSchedules() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter new status for this schedule (e.g., Postponed, Cancelled, Played):");
-        this.status = sc.nextLine().trim();
-        System.out.println("Schedule status updated successfully to: " + this.status);
-    }
-}
-
-// === LỚP TEAM (ĐÃ HOÀN THÀNH) ===
- class Team {
-    String teamName;
-    ArrayList listPlayer = new ArrayList(); 
-
-   public void TeamInformation() {
-        Scanner sc = new Scanner(System.in);
-        if (this.teamName == null || this.teamName.isEmpty()) {
-            System.out.println("Enter Team Name to set profile:");
-            this.teamName = sc.nextLine().trim();
-        }
-        System.out.println("=================================================");
-        System.out.println("=== TEAM PROFILE: " + this.teamName.toUpperCase() + " ===");
-        System.out.println("List of current players in the team:");
-        this.listPlayer.printAllPlayer(); // Gọi trực tiếp hàm in từ playerList của nhóm
-        System.out.println("=================================================");
+    public void TeamInformation() {
+        System.out.println("=== PlayerList Enter A Match " + id + " ===");
+        teamRoster.printAllPlayer(); 
     }
 }

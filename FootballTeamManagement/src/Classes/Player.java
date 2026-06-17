@@ -37,6 +37,10 @@ public class Player {
         this.baseSalary = baseSalary;
         this.status = status;
     }
+
+    public Player(String p01, String marcus_Rashford, int i, String striker, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     //getters
     public long getPlayerID() {
     return playerID;}
