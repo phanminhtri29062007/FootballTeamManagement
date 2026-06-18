@@ -74,7 +74,7 @@ public class Player {
     //setters
 
     public boolean setPlayerID(long playerID, ArrayList<Player> list) {
-        if(helperFunctions.findPlayer(playerID, list)==-1) return false;
+        if(helperFunctions.findPlayer(playerID, list)!=-1) return false;
         this.playerID = playerID;
         return true;
     }
@@ -115,7 +115,7 @@ public class Player {
     }
     
     public boolean setShirtNumber(int shirtNumber, ArrayList<Player> list) {
-        if((shirtNumber<1||shirtNumber>99) || helperFunctions.checkSNavailability(shirtNumber, list)) return false;
+        if((shirtNumber<1||shirtNumber>99) || !helperFunctions.checkSNavailability(shirtNumber, list)) return false;
         this.shirtNumber = shirtNumber;
     return true;}
     
