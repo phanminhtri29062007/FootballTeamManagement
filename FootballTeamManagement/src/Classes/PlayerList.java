@@ -15,8 +15,8 @@ import java.util.logging.Logger;
  * @author phanm
  */
 public class PlayerList {
-    ArrayList<Player> list;
-    int activeCount;
+    private static ArrayList<Player> list;
+    private static int activeCount;
 
     public PlayerList() {
         this.list= new ArrayList<>();
@@ -26,17 +26,16 @@ public class PlayerList {
         this.list = list;
         this.activeCount = activeCount;
     }
-    public ArrayList<Player> getList() {
+    public static ArrayList<Player> getList() {
         return list;
     }
-
-    public int getActiveCount() {
+    public static int getActiveCount() {
         return activeCount;
     }
-    public boolean updateActiveCount(int i){
+    public static boolean updateActiveCount(int i){
         int tmp=activeCount+i;
         if(tmp>100||tmp<0) return false;
-        this.activeCount=tmp;
+        activeCount=tmp;
         return true;
     }
     //ADD PLAYER
@@ -53,7 +52,7 @@ public class PlayerList {
                 System.out.println("Exited successfully!");
                 return 1;
             }
-            validity=p.setPlayerID(tmpid, getList());
+            validity=p.setPlayerID(tmpid);
             if(!validity) System.out.print("Duplicated id, please re-enter: ");
         } while (!validity);
         p.enterPlayerInfo(tmpid, list, updateActiveCount(1));
@@ -69,32 +68,35 @@ public class PlayerList {
 
         System.out.print("Enter player ID to update: ");
         long id = sc.nextLong();
-        int position=helperFunctions.findPlayer(id, getList());
-        if(position==-1){
+        Player target = helperFunctions.findPlayer(id);
+        if(target == null){
             System.err.println("ID not found, exiting update!");
             return 0;
         }
-        list.get(position).enterPlayerInfo(id, list, true);
+        target.enterPlayerInfo(id, list, true);
         return 1;
     }
 
     //DEACTIVATE & activate
     public int deactivatePlayer(long id) {
-        int found = helperFunctions.findPlayer(id, getList());
-        if (found==-1) {
+        Player target = helperFunctions.findPlayer(id);
+        if (target == null) {
             System.out.println("Player not found.");
             return -1;
         }
         else{
-            list.get(found).setStatus(false);
+            target.setStatus(false);
             return 0;
         }
     }
     public int activatePlayer(long id){
-        int found = helperFunctions.findPlayer(id, list);
-        Player p= list.get(found);
-        if(helperFunctions.checkSNavailability(p.getShirtNumber(), list)){
-            p.setStatus(true);
+        Player target = helperFunctions.findPlayer(id);
+        if(target == null){
+            System.out.println("Player not found.");
+            return -1;
+        }
+        if(helperFunctions.checkSNavailability(target.getShirtNumber())){
+            target.setStatus(true);
             System.out.println("Player activated successfully");
             return 0;
         }
@@ -102,7 +104,7 @@ public class PlayerList {
         return -1;
     }
     //PRINT ALL
-    public void printAllPlayer() {
+    public static void printAllPlayer() {
         if (list.isEmpty()) {
             System.out.println("No players in list.");
             return;
@@ -116,7 +118,7 @@ public class PlayerList {
         }
     }
         //PRINT BY ID
-    public void printPlayerInfo() {
+    public static void printPlayerInfo() {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Enter player ID: ");
@@ -193,7 +195,6 @@ public void loadFromFile() {
             int shirtNumber = Integer.parseInt(fileScanner.nextLine().trim());
             float baseSalary = Float.parseFloat(fileScanner.nextLine().trim());
             boolean status = Boolean.parseBoolean(fileScanner.nextLine().trim());
-
             // Reconstruct the Player object using your parameterized constructor
             // Passing an empty ArrayList for the performance log (plog) initially
             Player p = new Player(id, name, age, nationality, position, shirtNumber, baseSalary, status, new ArrayList<>());

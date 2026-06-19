@@ -126,7 +126,7 @@ public class MatchList{
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("./FootballTeamManagement/Datas/"+fileName, false)))) {
             
             pw.printf("===== MATCH  =====\nMã trận: %s\n: %s vs %s\n: %s\nTime: %s\nResult: %d - %d\n",
-                    m.getId(), m.getHomeTeam(), m.getOpponent(), m.getVenue(), m.getMatchDateTime(), m.getHomeScore(), m.getOpponentScore());
+                    m.getId(), m.getHomeTeam(), m.getOpponent(), m.getVenue(), m.getMatchDateString(), m.getHomeScore(), m.getOpponentScore());
             
             pw.println("-----------------------------");
             pw.println("PLAYERLIST ENTER A MATCH:");

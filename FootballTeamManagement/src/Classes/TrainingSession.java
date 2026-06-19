@@ -1,6 +1,5 @@
 package Classes;
 import java.time.LocalDate;
-import footballteammanagement.FootballTeamManagement;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class TrainingSession {
@@ -21,7 +20,7 @@ public class TrainingSession {
     setDate(d, m, y);
     setLocation(loc);
     setTopic(top);
-        setPresentList(presentID);
+    setPresentList(presentID);
 }
     public boolean setID(long id){
         if(id>0&&id<1000000000)
@@ -122,7 +121,7 @@ public class TrainingSession {
             System.out.printf("Enter %d IDs of absent players:\n", num);
             for (int i = 0; i < num; i++) {
                 playerID = sc.nextLong();
-                if (helperFunctions.findPlayer(playerID, lis)==-1) {
+                if (helperFunctions.findPlayer(playerID)== null) {
                     System.err.printf("Player ID:%d not found! Please re-enter.\n", playerID);
                     valid = false;
                     break;

@@ -51,35 +51,35 @@ public class helperFunctions {
         }
      }
     //Player lookup
-    public static int findPlayer(long id, ArrayList<Player> list) {
-    for (int i=0; i<list.size(); i++) {
-        if (list.get(i).getPlayerID() == id)
-            return i;
-    }
-    return -1;
+    public static Player findPlayer(long id) {
+        for (Player p : PlayerList.getList()){
+            if (p.getPlayerID()== id)
+                return p;
+        }
+        return null;
     }
     public static ArrayList<Player> findPlayers(Object parameter, ArrayList<Player> list, int choice){
         switch (choice){
             case 1:
-                return findName((String) parameter, list);
+                return findName((String) parameter);
             case 2:
-                return findPosition((String) parameter, list);
+                return findPosition((String) parameter);
             case 3:
-                return findNationality((String)parameter, list);
+                return findNationality((String)parameter);
             case 4:
-                return findStatus((boolean)parameter, list);
+                return findStatus((boolean)parameter);
         }
         return null;
     }
-    public static ArrayList<Player> findName(String name, ArrayList<Player> list){
+    public static ArrayList<Player> findName(String name){
         ArrayList<Player> pa=new ArrayList<>();
-        for(Player p : list){
+        for(Player p : PlayerList.getList()){
             if(p.getFullName().contains(name)) pa.add(p);
         }
         return pa;
     };
-    public static boolean checkSNavailability(int shirtNum, ArrayList<Player> list){
-        for(Player p : list){
+    public static boolean checkSNavailability(int shirtNum){
+        for(Player p : PlayerList.getList()){
             if(p.getShirtNumber()==shirtNum && p.isStatus()){
                 return false;
             }
@@ -87,25 +87,25 @@ public class helperFunctions {
         return true;
     }
 
-    private static ArrayList<Player> findStatus(boolean stat, ArrayList<Player> list) {
+    private static ArrayList<Player> findStatus(boolean stat) {
         ArrayList<Player> pa=new ArrayList<>();
-        for(Player p : list){
+        for(Player p : PlayerList.getList()){
             if(p.isStatus()==stat) pa.add(p);
         }
         return pa;
     }
 
-    private static ArrayList<Player> findNationality(String nat, ArrayList<Player> list) {
+    private static ArrayList<Player> findNationality(String nat) {
         ArrayList<Player> pa=new ArrayList<>();
-        for(Player p : list){
+        for(Player p : PlayerList.getList()){
             if(p.getNationality().contains(nat)) pa.add(p);
         }
         return pa;
     }
 
-    private static ArrayList<Player> findPosition(String pos, ArrayList<Player> list) {
+    private static ArrayList<Player> findPosition(String pos) {
         ArrayList<Player> pa=new ArrayList<>();
-        for(Player p : list){
+        for(Player p : PlayerList.getList()){
             if(p.getPosition().equals(pos)) pa.add(p);
         }
         return pa;
@@ -117,5 +117,17 @@ public class helperFunctions {
         {
             System.out.print(i+"   ");
         }
+    }
+    public static int findByMatchID(String matchID, ArrayList<Performance> Log){
+        for(int i=0; i<Log.size();i++){
+            if(Log.get(i).getMatchID().equals(matchID)) return i;
+        }
+        return -1;
+    }
+    public static Match searchMatch(String matchID, ArrayList<Match> list){
+        for(Match m : list){
+            if(m.getId().equals(matchID)) return m;
+        }
+        return null;
     }
 }

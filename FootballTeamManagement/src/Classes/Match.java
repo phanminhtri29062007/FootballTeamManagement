@@ -4,17 +4,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 public class Match {
     // Khai báo các thuộc atính private để đảm bảo tính đóng gói (Encapsulation)
     private String id;
     private String homeTeam;
     private String opponent;
     private String venue;
-    private String matchDateTime;
+    private LocalDate matchDate;
     private int homeScore;
     private int opponentScore;
-    
+    Performance perf;
     // Using has-
     private PlayerList teamRoster;
 
@@ -24,32 +25,35 @@ public class Match {
         this.homeTeam = "Unknown";
         this.opponent = "Unknown";
         this.venue = "Unknown";
-        this.matchDateTime = "Unknown";
+        this.matchDate = null;
         this.homeScore = 0;      
         this.opponentScore = 0;
         this.teamRoster = new PlayerList();
+        this.perf=null;
     }
 
     // CONSTRUCTOR WITH PARAMETER
-    public Match(String id, String homeTeam, String opponent, String venue, String matchDateTime) {
+    public Match(String id, String homeTeam, String opponent, String venue, LocalDate matchDateTime) {
         this.id = id;
         this.homeTeam = homeTeam;
         this.opponent = opponent;
         this.venue = venue;
-        this.matchDateTime = matchDateTime;
+        this.matchDate = matchDateTime;
         this.homeScore = 0;
         this.opponentScore = 0;
         this.teamRoster = new PlayerList();
+        this.perf=null;
     }
     // ================= GETTERS =================
     public String getId() { return id; }
     public String getHomeTeam() { return homeTeam; }
     public String getOpponent() { return opponent; }
     public String getVenue() { return venue; }
-    public String getMatchDateTime() { return matchDateTime; }
+    public LocalDate getMatchDate() { return matchDate; }
     public int getHomeScore() { return homeScore; }
     public int getOpponentScore() { return opponentScore; }
     public PlayerList getTeamRoster() { return teamRoster; }
+    public Performance getPerf() {return perf;}
     // ================= SETTERS CÓ ĐIỀU KIỆN (VALIDATION) =================
     public boolean setId(String id) {
         if (id == null || id.trim().isEmpty()) return false; // IF EMPTY RETURN FALSE
@@ -77,9 +81,9 @@ public class Match {
         return true;
     }
 
-    public boolean setMatchDateTime(String matchDateTime) {
-        if (matchDateTime == null || matchDateTime.trim().isEmpty()) return false; 
-        this.matchDateTime = matchDateTime;
+    public boolean setMatchDateTime(LocalDate matchDateTime) {
+        if (matchDateTime == null) return false; 
+        this.matchDate = matchDate;
         return true;
     }
 
@@ -89,7 +93,15 @@ public class Match {
         this.opponentScore = opponentScore;
         return true;
     }
-
+    public void setperf(Performance perf)
+    {
+        this.perf=perf;
+    }
+    public String getMatchDateString(){
+        
+        DateTimeFormatter customFormat = DateTimeFormatter.ofPattern("dd, mm, yyyy");
+        return this.matchDate.format(customFormat);
+    }
     public void inputMatchDetails() {
         Scanner sc = new Scanner(System.in);
         boolean validity;
@@ -125,9 +137,12 @@ public class Match {
         } while (!validity);
 
         do {
-            System.out.print("Enter MatchDateTime: ");
-            String tmpTime = sc.nextLine();
-            validity = setMatchDateTime(tmpTime);
+            System.out.print("Enter Match Date: ");
+            int d, m, y;
+            d=sc.nextInt();
+            m=sc.nextInt();
+            y=sc.nextInt();
+            validity = setMatchDateTime(LocalDate.of(y, m, d));
             if (!validity) System.out.println("Error: Match Time Can't Be Empty!");
         } while (!validity);
         
@@ -152,17 +167,39 @@ public class Match {
     }
 
     public void ScheduleDetails() {
-        System.out.println("Match Time Begin: " + matchDateTime + " tại: " + venue);
+        DateTimeFormatter customFormat = DateTimeFormatter.ofPattern("dd, mm, yyyy");
+        System.out.println("Match Time Begin: " + getMatchDate().format(customFormat) + " tại: " + getVenue());
     }
 
-    public void ChangeKickOff(String newDateTime) {
-        if (setMatchDateTime(newDateTime)) {
-            System.out.println("Time Competition Change To: " + matchDateTime);
+    public void ChangeKickOff(LocalDate newDate) {
+        if (setMatchDateTime(newDate)) {
+            DateTimeFormatter customFormat = DateTimeFormatter.ofPattern("dd, mm, yyyy");
+            System.out.println("Time Competition Change To: " + matchDate.format(customFormat));
         }
     }
 
     public void TeamInformation() {
         System.out.println("=== PlayerList Enter A Match " + id + " ===");
         teamRoster.printAllPlayer(); 
+    }
+    
+    public void enterPerf(ArrayList<Player> list){
+        if(getPerf()==null){
+            setperf(new Performance());
+            getPerf().updatePerformance(getId(), getMatchDate());
+            Long ID=getPerf().getPlayerID();
+            Player p=helperFunctions.findPlayer(ID);
+            p.addPerformanceLog(getPerf());
+        }
+        else{
+            Long ID=getPerf().getPlayerID();
+            Player p=helperFunctions.findPlayer(ID);
+            p.getPerformance().remove(getPerf());
+            System.out.println("Overwriting Match Performance Record:");
+            getPerf().updatePerformance(getId(), getMatchDate());
+            ID=getPerf().getPlayerID();
+            p=helperFunctions.findPlayer(ID);
+            p.addPerformanceLog(getPerf());
+        }
     }
 }
