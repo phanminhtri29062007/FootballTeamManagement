@@ -55,10 +55,18 @@ public class PlayerList {
             validity=p.setPlayerID(tmpid);
             if(!validity) System.out.print("Duplicated id, please re-enter: ");
         } while (!validity);
+        System.out.println("Enter player type:");
+        System.out.println("1-Normal\t2-Star");
+        sc.nextLine();
+        int pt=sc.nextInt();
+        do {            
+            if(pt==1) p= new NormalPlayer(p);
+            if(pt==2) p= new StarPlayer(p);
+        } while (pt!=1&&pt!=2);
         p.enterPlayerInfo(tmpid, list, updateActiveCount(1));
         list.add(p);
-        activeCount++;
-        System.out.println("Add player successfully.");
+        if(p.isStatus()) activeCount++;
+        System.out.println("Added player successfully.");
         return 0;
     }
 
