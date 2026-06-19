@@ -15,6 +15,7 @@ public class Player {
     private int shirtNumber;
     private float baseSalary;
     private boolean status;
+    private ArrayList<Performance> plog;
     public Player() {
     this.playerID = 0;
     this.fullName = "Unknown";
@@ -24,10 +25,11 @@ public class Player {
     this.shirtNumber = 0;
     this.baseSalary = 0;
     this.status = false;
+    this.plog=new ArrayList<>();
 }
     
     public Player(long playerID, String fullName, int age, String nationality, String position, 
-              int shirtNumber, float baseSalary, boolean status) {
+              int shirtNumber, float baseSalary, boolean status, ArrayList<Performance> log) {
         this.playerID = playerID;
         this.fullName = fullName;
         this.age = age;
@@ -36,11 +38,9 @@ public class Player {
         this.shirtNumber = shirtNumber;
         this.baseSalary = baseSalary;
         this.status = status;
+        this.plog=log;
     }
 
-    public Player(String p01, String marcus_Rashford, int i, String striker, int i0) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     //getters
     public long getPlayerID() {
     return playerID;}
@@ -65,6 +65,9 @@ public class Player {
 
     public boolean isStatus() {
         return status;
+    }
+    public ArrayList<Performance> getPerformance(){
+        return this.plog;
     }
     //input validation
     boolean validate(String s)
@@ -128,6 +131,10 @@ public class Player {
         this.status = status;
         return true;
     }
+    
+    public void addPerformanceLog(Performance p){
+        this.plog.add(p);
+    }
     //ENTER PLAYER
     void enterPlayerInfo(Long ID, ArrayList<Player> list, boolean activate) {
         int tmpAge;
@@ -154,8 +161,8 @@ public class Player {
         }while(!validity);
         System.out.println("1-Goal keeper\t2-Defender\t3-Midfielder\t4Forward");
         System.out.print("Enter position (1-4): ");
-        positionIndex=sc.nextInt();
         do{
+            positionIndex=sc.nextInt();
             validity=setPosition(positionIndex);
             if(!validity)System.out.println("Invalid input, please re-enter position:");
         }while(!validity);

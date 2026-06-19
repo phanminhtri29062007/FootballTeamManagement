@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Classes;
 import java.io.File;
 import java.io.FileWriter;
@@ -12,11 +8,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 public class TrainingRecords {
     private ArrayList<TrainingSession> trainingList;
-    private int count;
-
+    
     public TrainingRecords() {
         trainingList=new ArrayList<>();
-        count=0;
+    }
+
+    public ArrayList<TrainingSession> getTrainingList() {
+        return trainingList;
     }
     public void addSession(int req, ArrayList<Player> list){
         for(int i=0; i<req; i++)
@@ -24,7 +22,6 @@ public class TrainingRecords {
             TrainingSession TS=new TrainingSession();
             TS.recordSession(list, trainingList );
             trainingList.add(TS);
-            count++;
         }
     }
     public void addSession(TrainingSession ses){
@@ -32,9 +29,9 @@ public class TrainingRecords {
     }
     public void viewHistory(){
         System.out.printf("%10s%13s%11s%21s|%n", "ID", "Date", "Location", "Topic");
-        for(int i=0; i<count; i++)
+        for(TrainingSession i : getTrainingList())
         {
-            trainingList.get(i).printSessionRecord();
+            i.printSessionRecord();
         }
     }
     public void printSessionDetails(long sesID){
@@ -49,7 +46,11 @@ public class TrainingRecords {
         }
         System.out.println("");
     }
-    
+    public TrainingSession searchSession(long sesid) {
+        for(TrainingSession s : getTrainingList())
+            if(s.getID()==sesid) return s;
+        return null;
+    }
     public void saveToFile() {
     File dir = new File("./FootballTeamManagement/Datas");
     if (!dir.exists()) {
@@ -76,11 +77,10 @@ public class TrainingRecords {
         System.err.println("Error saving training records: " + e.getMessage());
     }
 }
-/*
+
 public void loadFromFile() {
     try (Scanner sc = new Scanner(new File("./FootballTeamManagement/Datas/TrainingRecordsData.txt"))) {
         trainingList.clear();
-        count = 0;
 
         int total = Integer.parseInt(sc.nextLine().trim());
         for (int i = 0; i < total; i++) {
@@ -101,7 +101,6 @@ public void loadFromFile() {
 
             TrainingSession ts = new TrainingSession(id, d, m, y, loc, top, presenceList);
             trainingList.add(ts);
-            count++;
         }
         System.out.println("Training records loaded successfully.");
     } catch (FileNotFoundException e) {
@@ -110,5 +109,5 @@ public void loadFromFile() {
         System.err.println("Error loading training records: " + e.getMessage());
     }
 }
-    */
+
 }

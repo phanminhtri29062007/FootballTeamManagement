@@ -41,7 +41,6 @@ public class Match {
         this.opponentScore = 0;
         this.teamRoster = new PlayerList();
     }
-
     // ================= GETTERS =================
     public String getId() { return id; }
     public String getHomeTeam() { return homeTeam; }
@@ -51,9 +50,7 @@ public class Match {
     public int getHomeScore() { return homeScore; }
     public int getOpponentScore() { return opponentScore; }
     public PlayerList getTeamRoster() { return teamRoster; }
-
     // ================= SETTERS CÓ ĐIỀU KIỆN (VALIDATION) =================
-    
     public boolean setId(String id) {
         if (id == null || id.trim().isEmpty()) return false; // IF EMPTY RETURN FALSE
         this.id = id;

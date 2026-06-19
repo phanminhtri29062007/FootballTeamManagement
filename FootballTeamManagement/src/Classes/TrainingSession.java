@@ -102,8 +102,16 @@ public class TrainingSession {
     private ArrayList<Long> recordAbsence(ArrayList<Player> lis){
         Scanner sc= new Scanner(System.in);
         int num;
+        int ACount=0;
+        for(Player p : lis){
+            if(p.isStatus()) ACount++;
+        }
+        do{
         System.out.println("Enter absence number:");
         num=sc.nextInt();
+        if(num>ACount) System.err.println("Exceeded number of active players!");
+        if(num<0) System.err.println("Must be >=0!");
+        }while(num>ACount || num<0);
         ArrayList<Long> absenceID = new ArrayList<>();
         if(num<=0) return absenceID;
         long playerID;

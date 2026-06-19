@@ -58,6 +58,26 @@ public class helperFunctions {
     }
     return -1;
     }
+    public static ArrayList<Player> findPlayers(Object parameter, ArrayList<Player> list, int choice){
+        switch (choice){
+            case 1:
+                return findName((String) parameter, list);
+            case 2:
+                return findPosition((String) parameter, list);
+            case 3:
+                return findNationality((String)parameter, list);
+            case 4:
+                return findStatus((boolean)parameter, list);
+        }
+        return null;
+    }
+    public static ArrayList<Player> findName(String name, ArrayList<Player> list){
+        ArrayList<Player> pa=new ArrayList<>();
+        for(Player p : list){
+            if(p.getFullName().contains(name)) pa.add(p);
+        }
+        return pa;
+    };
     public static boolean checkSNavailability(int shirtNum, ArrayList<Player> list){
         for(Player p : list){
             if(p.getShirtNumber()==shirtNum && p.isStatus()){
@@ -65,5 +85,37 @@ public class helperFunctions {
             }
         }
         return true;
+    }
+
+    private static ArrayList<Player> findStatus(boolean stat, ArrayList<Player> list) {
+        ArrayList<Player> pa=new ArrayList<>();
+        for(Player p : list){
+            if(p.isStatus()==stat) pa.add(p);
+        }
+        return pa;
+    }
+
+    private static ArrayList<Player> findNationality(String nat, ArrayList<Player> list) {
+        ArrayList<Player> pa=new ArrayList<>();
+        for(Player p : list){
+            if(p.getNationality().contains(nat)) pa.add(p);
+        }
+        return pa;
+    }
+
+    private static ArrayList<Player> findPosition(String pos, ArrayList<Player> list) {
+        ArrayList<Player> pa=new ArrayList<>();
+        for(Player p : list){
+            if(p.getPosition().equals(pos)) pa.add(p);
+        }
+        return pa;
+    }
+    
+    public static void printList(ArrayList<Long> list, String prompt) {
+        System.out.println(prompt);
+        for(Long i : list)
+        {
+            System.out.print(i+"   ");
+        }
     }
 }

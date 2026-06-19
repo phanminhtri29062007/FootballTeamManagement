@@ -13,7 +13,6 @@ import java.io.PrintWriter;
 public class MatchList{
     private final Match[] arr = new Match[100];
     private int count = 0;
-
     public void addManyMatches() {            
         boolean cont = false;
         Scanner sc = new Scanner(System.in);

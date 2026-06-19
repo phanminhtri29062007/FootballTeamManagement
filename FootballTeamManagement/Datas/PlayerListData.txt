@@ -1,0 +1,17 @@
+2
+1
+phanminhtri
+18
+vietnam
+Forward
+7
+2000.0
+true
+2
+nguyenngocxuanthy
+17
+bien-hoa
+Defender
+8
+200.0
+true
