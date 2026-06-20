@@ -83,7 +83,7 @@ public class Match {
 
     public boolean setMatchDateTime(LocalDate matchDateTime) {
         if (matchDateTime == null) return false; 
-        this.matchDate = matchDate;
+        this.matchDate = matchDateTime;
         return true;
     }
 
