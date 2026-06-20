@@ -41,7 +41,7 @@ public class PlayerList {
     //ADD PLAYER
     public int addPlayer() {
         Scanner sc=new Scanner(System.in);
-        Player p = new Player();
+        Player p = null;
         long tmpid;
         boolean validity;
         System.out.print("Enter ID (-1 to go back): ");
@@ -205,7 +205,7 @@ public void loadFromFile() {
             boolean status = Boolean.parseBoolean(fileScanner.nextLine().trim());
             // Reconstruct the Player object using your parameterized constructor
             // Passing an empty ArrayList for the performance log (plog) initially
-            Player p = new Player(id, name, age, nationality, position, shirtNumber, baseSalary, status, new ArrayList<>());
+            Player p = new NormalPlayer(id, name, age, nationality, position, shirtNumber, baseSalary, status, new ArrayList<>());
             
             list.add(p);
             
