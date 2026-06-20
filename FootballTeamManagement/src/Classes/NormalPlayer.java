@@ -24,7 +24,19 @@ public class NormalPlayer extends Player{
             new ArrayList<Performance>()
         );
     }
+
+    public NormalPlayer(long playerID, String fullName, int age, String nationality, String position, int shirtNumber, float baseSalary, boolean status, ArrayList<Performance> log) {
+        super(playerID, fullName, age, nationality, position, shirtNumber, baseSalary, status, log);
+    }
+    
+    @Override
     public float calculateSalary(){
         return super.getBaseSalary();
+    }
+    
+    @Override
+    void printPlayer(){
+        super.printPlayer();
+        System.out.println("Type: Regular Player");
     }
 }
