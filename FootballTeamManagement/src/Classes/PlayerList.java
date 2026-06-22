@@ -31,14 +31,19 @@ public class PlayerList {
         return list;
     }
     public static int getActiveCount() {
-        return activeCount;
+        return PlayerList.activeCount;
     }
     public static boolean updateActiveCount(int i){
         int tmp=activeCount+i;
-        if(tmp>100||tmp<0) return false;
+        if(tmp>25||tmp<0) return false;
         activeCount=tmp;
         return true;
     }
+
+    public static void setActiveCount(int activeCount) {
+        PlayerList.activeCount = activeCount;
+    }
+    
     //ADD PLAYER
     public int addPlayer() {
         Scanner sc=new Scanner(System.in);
@@ -173,7 +178,7 @@ public void saveToFile() {
             pw.println(p.getBaseSalary());
             pw.println(p.isStatus()); // Saves as true/false
             if(p instanceof StarPlayer) DriverManager.println("1");
-            else DriverManager.println("0");
+            else pw.println("0");
         }
         System.out.println("Player records saved successfully.");
     }   catch (IOException ex) {
@@ -189,7 +194,7 @@ public void loadFromFile() {
 
     try (Scanner fileScanner = new Scanner(file)) {
         list.clear(); // Clear memory before loading
-        this.activeCount = 0;
+        setActiveCount(0);
 
         if (!fileScanner.hasNextLine()) return;
         
@@ -216,7 +221,7 @@ public void loadFromFile() {
             list.add(p);
             
             if (status) {
-                this.activeCount++;
+                updateActiveCount(1);
             }
         }
         System.out.println("Player records loaded successfully. Total players: " + list.size());
