@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -41,7 +42,7 @@ public class PlayerList {
     //ADD PLAYER
     public int addPlayer() {
         Scanner sc=new Scanner(System.in);
-        Player p = null;
+        Player p = new Player();
         long tmpid;
         boolean validity;
         System.out.print("Enter ID (-1 to go back): ");
@@ -57,11 +58,12 @@ public class PlayerList {
         } while (!validity);
         System.out.println("Enter player type:");
         System.out.println("1-Normal\t2-Star");
-        sc.nextLine();
-        int pt=sc.nextInt();
-        do {            
+        sc=new Scanner(System.in);
+        int pt;
+        do {
+            pt=sc.nextInt();
             if(pt==1) p= new NormalPlayer(p);
-            if(pt==2) p= new StarPlayer(p);
+            else if(pt==2) p= new StarPlayer(p);
         } while (pt!=1&&pt!=2);
         p.enterPlayerInfo(tmpid, list, updateActiveCount(1));
         list.add(p);
@@ -170,6 +172,8 @@ public void saveToFile() {
             pw.println(p.getShirtNumber());
             pw.println(p.getBaseSalary());
             pw.println(p.isStatus()); // Saves as true/false
+            if(p instanceof StarPlayer) DriverManager.println("1");
+            else DriverManager.println("0");
         }
         System.out.println("Player records saved successfully.");
     }   catch (IOException ex) {
@@ -205,8 +209,10 @@ public void loadFromFile() {
             boolean status = Boolean.parseBoolean(fileScanner.nextLine().trim());
             // Reconstruct the Player object using your parameterized constructor
             // Passing an empty ArrayList for the performance log (plog) initially
-            Player p = new NormalPlayer(id, name, age, nationality, position, shirtNumber, baseSalary, status, new ArrayList<>());
-            
+            int type=Integer.parseInt(fileScanner.nextLine().trim());
+            Player p = new Player(id, name, age, nationality, position, shirtNumber, baseSalary, status, new ArrayList<>());
+            if(type==0) p= new StarPlayer(p);
+            else p=new NormalPlayer(p);
             list.add(p);
             
             if (status) {
