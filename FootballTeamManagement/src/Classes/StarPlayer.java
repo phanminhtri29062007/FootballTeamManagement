@@ -24,6 +24,10 @@ public class StarPlayer extends Player{
             new ArrayList<Performance>()
         );
     }
+    @Override
+    public float calculateSalary(){
+        return super.getBaseSalary();
+    }
     public float calculateSalary(LocalDate x){
         return calcMonthlyBonus(x)+super.getBaseSalary();
     }
@@ -39,5 +43,10 @@ public class StarPlayer extends Player{
     }
     public int calcMonthlyBonus(LocalDate x){
         return calcMonthlyPPoint(x)*500000;
+    }
+    @Override
+    void printPlayer(){
+        super.printPlayer();
+        System.out.println("Type: star Player");
     }
 }

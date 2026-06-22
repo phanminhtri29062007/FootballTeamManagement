@@ -6,7 +6,7 @@ package Classes;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Player {
+public abstract class Player {
     private long playerID;
     private String fullName;
     private int age;
@@ -217,4 +217,5 @@ public class Player {
         }
         return totalpp;
     }
+    public abstract float calculateSalary();
 }
