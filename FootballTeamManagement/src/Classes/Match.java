@@ -1,13 +1,11 @@
 package Classes;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 public class Match {
-    // Khai báo các thuộc atính private để đảm bảo tính đóng gói (Encapsulation)
     private String id;
     private String homeTeam;
     private String opponent;
@@ -16,10 +14,11 @@ public class Match {
     private int homeScore;
     private int opponentScore;
     Performance perf;
-    // Using has-
-    private PlayerList teamRoster;
+    
+    private ArrayList<Player> homeSquad;      // Team 1
+    private ArrayList<Player> opponentSquad;  // Team 2
 
-    // CONSTRUCTOR WITHOUT PARAMETER
+    // CONSTRUCTOR WITHOUT PARAMETERS
     public Match() {
         this.id = "Unknown";
         this.homeTeam = "Unknown";
@@ -28,11 +27,12 @@ public class Match {
         this.matchDate = null;
         this.homeScore = 0;      
         this.opponentScore = 0;
-        this.teamRoster = new PlayerList();
-        this.perf=null;
+        this.homeSquad = new ArrayList<>();
+        this.opponentSquad = new ArrayList<>();
+        this.perf = null;
     }
 
-    // CONSTRUCTOR WITH PARAMETER
+    // CONSTRUCTOR WITH PARAMETERS
     public Match(String id, String homeTeam, String opponent, String venue, LocalDate matchDateTime) {
         this.id = id;
         this.homeTeam = homeTeam;
@@ -41,10 +41,15 @@ public class Match {
         this.matchDate = matchDateTime;
         this.homeScore = 0;
         this.opponentScore = 0;
-        this.teamRoster = new PlayerList();
-        this.perf=null;
+        this.homeSquad = new ArrayList<>();
+        this.opponentSquad = new ArrayList<>();
+        this.perf = null;
     }
-    // ================= GETTERS =================
+
+    // ================= GETTERS FOR BOTH TEAMS =================
+    public ArrayList<Player> getHomeSquad() { return homeSquad; }
+    public ArrayList<Player> getOpponentSquad() { return opponentSquad; }
+    
     public String getId() { return id; }
     public String getHomeTeam() { return homeTeam; }
     public String getOpponent() { return opponent; }
@@ -52,11 +57,11 @@ public class Match {
     public LocalDate getMatchDate() { return matchDate; }
     public int getHomeScore() { return homeScore; }
     public int getOpponentScore() { return opponentScore; }
-    public PlayerList getTeamRoster() { return teamRoster; }
-    public Performance getPerf() {return perf;}
-    // ================= SETTERS CÓ ĐIỀU KIỆN (VALIDATION) =================
+    public Performance getPerf() { return perf; }
+
+    // ================= SETTERS =================
     public boolean setId(String id) {
-        if (id == null || id.trim().isEmpty()) return false; // IF EMPTY RETURN FALSE
+        if (id == null || id.trim().isEmpty()) return false; 
         this.id = id;
         return true;
     }
@@ -69,7 +74,6 @@ public class Match {
 
     public boolean setOpponent(String opponent) {
         if (opponent == null || opponent.trim().isEmpty()) return false;
-        // OPPONENT NAME CAN NOT BE THE SAME WITH HOMETEAM
         if (opponent.equalsIgnoreCase(this.homeTeam)) return false; 
         this.opponent = opponent;
         return true;
@@ -93,15 +97,12 @@ public class Match {
         this.opponentScore = opponentScore;
         return true;
     }
-    public void setperf(Performance perf)
-    {
-        this.perf=perf;
-    }
+
     public String getMatchDateString(){
-        
-        DateTimeFormatter customFormat = DateTimeFormatter.ofPattern("dd, mm, yyyy");
+        DateTimeFormatter customFormat = DateTimeFormatter.ofPattern("dd, MM, yyyy");
         return this.matchDate.format(customFormat);
     }
+
     public void inputMatchDetails() {
         Scanner sc = new Scanner(System.in);
         boolean validity;
@@ -137,21 +138,15 @@ public class Match {
         } while (!validity);
 
         do {
-            System.out.print("Enter Match Date: ");
-            int d, m, y;
-            d=sc.nextInt();
-            m=sc.nextInt();
-            y=sc.nextInt();
+            System.out.print("Enter Match Date (dd mm yyyy): ");
+            int d = sc.nextInt();
+            int m = sc.nextInt();
+            int y = sc.nextInt();
             validity = setMatchDateTime(LocalDate.of(y, m, d));
             if (!validity) System.out.println("Error: Match Time Can't Be Empty!");
         } while (!validity);
         
         System.out.println(">>> Save Match Information Successfully! <<<\n");
-    }
-
-    public void inputPlayerForMatch() {
-        System.out.println("--- PlayerList Add To A Match ---");
-        teamRoster.addPlayer(); 
     }
 
     public void MatchInformation() {
@@ -166,40 +161,64 @@ public class Match {
         }
     }
 
-    public void ScheduleDetails() {
-        DateTimeFormatter customFormat = DateTimeFormatter.ofPattern("dd, mm, yyyy");
-        System.out.println("Match Time Begin: " + getMatchDate().format(customFormat) + " tại: " + getVenue());
-    }
-
-    public void ChangeKickOff(LocalDate newDate) {
-        if (setMatchDateTime(newDate)) {
-            DateTimeFormatter customFormat = DateTimeFormatter.ofPattern("dd, mm, yyyy");
-            System.out.println("Time Competition Change To: " + matchDate.format(customFormat));
-        }
-    }
-
     public void TeamInformation() {
-        System.out.println("=== PlayerList Enter A Match " + id + " ===");
-        teamRoster.printAllPlayer(); 
+        System.out.println("\n=== Players In Match " + id + " ===");
+        
+        System.out.println("--- " + homeTeam + " (HOME TEAM) ---");
+        if (homeSquad.isEmpty()) System.out.println("No players assigned yet.");
+        for (Player p : homeSquad) {
+            p.printPlayer();
+            System.out.println("------------------");
+        }
+
+        System.out.println("--- " + opponent + " (OPPONENT TEAM) ---");
+        if (opponentSquad.isEmpty()) System.out.println("No players assigned yet.");
+        for (Player p : opponentSquad) {
+            p.printPlayer();
+            System.out.println("------------------");
+        }
     }
     
-    public void enterPerf(ArrayList<Player> list){
-        if(getPerf()==null){
-            setperf(new Performance());
-            getPerf().updatePerformance(getId(), getMatchDate());
-            Long ID=getPerf().getPlayerID();
-            Player p=helperFunctions.findPlayer(ID);
-            p.addPerformanceLog(getPerf());
+    public void recordTeamPerformances() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\n=== RECORDING PERFORMANCES FOR MATCH " + id + " ===");
+
+        // Record for Home Team
+        System.out.println("\n--- " + homeTeam + " (HOME TEAM) ---");
+        recordSquadStats(homeSquad, sc);
+
+        // Record for Opponent Team
+        System.out.println("\n--- " + opponent + " (OPPONENT TEAM) ---");
+        recordSquadStats(opponentSquad, sc);
+
+        System.out.println(">>> Finished recording match performances! <<<");
+    }
+
+    // Helper method to keep code clean and avoid repeating the loop twice
+    private void recordSquadStats(ArrayList<Player> squad, Scanner sc) {
+        if (squad == null || squad.isEmpty()) {
+            System.out.println("No players found in this squad.");
+            return;
         }
-        else{
-            Long ID=getPerf().getPlayerID();
-            Player p=helperFunctions.findPlayer(ID);
-            p.getPerformance().remove(getPerf());
-            System.out.println("Overwriting Match Performance Record:");
-            getPerf().updatePerformance(getId(), getMatchDate());
-            ID=getPerf().getPlayerID();
-            p=helperFunctions.findPlayer(ID);
-            p.addPerformanceLog(getPerf());
+
+        for (Player p : squad) {
+            if (p.isStatus()) {
+                System.out.print("Record performance for " + p.getFullName() + " (ID: " + p.getPlayerID() + ")? (true/false): ");
+                
+                try {
+                    boolean record = sc.nextBoolean();
+                    if (record) {
+                        Performance newPerf = new Performance();
+                        newPerf.updatePerformance(p.getPlayerID(), this.id, this.matchDate);
+                        
+                        p.addPerformanceLog(newPerf);
+                        PerfomanceLog.addPerfEntry(newPerf);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Invalid input, skipping this player.");
+                    sc.nextLine(); 
+                }
+            }
         }
     }
 }

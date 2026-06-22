@@ -65,7 +65,7 @@ public class Performance {
         return true;
     }
     
-    public void updatePerformance(String matchID, LocalDate time) {
+    public void updatePerformance(long PassedplayerID,String PassedmatchID, LocalDate time) {
         Scanner sc = new Scanner(System.in);
         boolean validity = false;
 

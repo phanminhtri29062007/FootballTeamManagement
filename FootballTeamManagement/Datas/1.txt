@@ -1,0 +1,9 @@
+===== MATCH  =====
+Mã trận: 1
+: 2 vs 1
+: 1
+Time: 1
+Result: 0 - 0
+-----------------------------
+PLAYERLIST ENTER A MATCH:
+- ID: 1 | Name: minh-tri | Position: Forward | : 1

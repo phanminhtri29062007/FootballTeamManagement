@@ -1,0 +1,9 @@
+===== MATCH DETAILS =====
+Match ID: 1
+Match Type: friendly
+Match: 1 vs 2
+Venue: vietnam
+Kick-off: 20/06/2030 19:00:00
+Score: 0 - 0
+-----------------------------
+PLAYER ROSTER:
