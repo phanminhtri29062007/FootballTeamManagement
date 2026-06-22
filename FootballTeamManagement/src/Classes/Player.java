@@ -210,10 +210,10 @@ public class Player {
         System.out.println("Shirt Number: " + shirtNumber);
         System.out.println("Status: " + status);
     }
-    int calcTotalPPoint(){
+    int calcTotalGoal(){
         int totalpp=0;
         for(Performance perf : getPerformance()){
-            totalpp+=perf.calculatePerformancePoints();
+            totalpp+=perf.getGoals();
         }
         return totalpp;
     }
